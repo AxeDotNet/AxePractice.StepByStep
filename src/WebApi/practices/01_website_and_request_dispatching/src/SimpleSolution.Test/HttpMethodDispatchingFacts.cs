@@ -34,7 +34,9 @@ namespace SimpleSolution.Test
         {
             HttpResponseMessage response = await Client.SendAsync(
                 new HttpRequestMessage(new HttpMethod(method), "users"));
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.True(
+                response.StatusCode == HttpStatusCode.NotFound ||
+                response.StatusCode == HttpStatusCode.MethodNotAllowed);
         }
     }
 }
