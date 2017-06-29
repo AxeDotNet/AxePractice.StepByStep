@@ -5,7 +5,7 @@ using Xunit;
 
 namespace SimpleSolution.Test
 {
-    public class HttpMethodDispatchingFacts : ResourceTestBase
+    public class RouteDispatchingFacts : ResourceTestBase
     {
         [Fact]
         public async Task should_get_user_by_id()

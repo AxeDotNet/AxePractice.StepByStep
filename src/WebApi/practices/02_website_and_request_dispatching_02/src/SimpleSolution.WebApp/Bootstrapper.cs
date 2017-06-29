@@ -6,6 +6,10 @@ namespace SimpleSolution.WebApp
     {
         public static void Init(HttpConfiguration configuration)
         {
+            // Note. Since response message generation is out of scope
+            // of our test. So I have create an extension method called
+            // Request.Text(HttpStatusCode, string) to help you generating
+            // a textual response.
         }
     }
 }
