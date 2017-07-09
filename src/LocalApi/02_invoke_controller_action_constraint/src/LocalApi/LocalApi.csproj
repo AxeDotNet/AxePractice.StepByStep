@@ -44,6 +44,7 @@
     <Compile Include="MethodAttributes\HttpGet.cs" />
     <Compile Include="MethodAttributes\HttpPost.cs" />
     <Compile Include="MethodAttributes\HttpPut.cs" />
+    <Compile Include="MethodAttributes\IMethodProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

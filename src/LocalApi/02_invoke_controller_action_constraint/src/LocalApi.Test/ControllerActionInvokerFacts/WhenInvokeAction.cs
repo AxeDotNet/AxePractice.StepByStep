@@ -108,15 +108,6 @@ namespace LocalApi.Test.ControllerActionInvokerFacts
         }
 
         [Fact]
-        public void should_return_not_found_if_no_method_matches_method()
-        {
-            HttpResponseMessage response = ControllerActionInvoker.InvokeAction(
-                new ActionDescriptor(new ControllerWithoutMethodAnnotation(), "Get", HttpMethod.Get));
-
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-        }
-
-        [Fact]
         public void should_return_method_not_allowed_if_method_mismatches()
         {
             HttpResponseMessage response = ControllerActionInvoker.InvokeAction(
