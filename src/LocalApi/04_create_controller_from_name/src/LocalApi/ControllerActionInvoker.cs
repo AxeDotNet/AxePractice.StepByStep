@@ -16,12 +16,20 @@ namespace LocalApi
             IDependencyResolver resolver,
             IControllerFactory controllerFactory)
         {
-            HttpController controller = controllerFactory.CreateController(
-                matchedRoute.ControllerName, controllerTypes, resolver);
-            if (controller == null) { return new HttpResponseMessage(HttpStatusCode.InternalServerError); }
+            #region Please modify the following code to pass the test
+
+            /*
+             * In this test, you have to create the controller from its name rather
+             * than its type. So we introduced a new interface called IControllerFactory.
+             * It will create controller directly by its name with the help of 
+             * controller type collection returned by IHttpControllerTypeResolver and
+             * IDependencyResolver.
+             */
 
             return InvokeActionInternal(
-                new ActionDescriptor(controller, matchedRoute.ActionName, matchedRoute.MethodConstraint));
+                new ActionDescriptor(null, matchedRoute.ActionName, matchedRoute.MethodConstraint));
+
+            #endregion
         }
 
         static HttpResponseMessage InvokeActionInternal(ActionDescriptor actionDescriptor)

@@ -29,6 +29,30 @@ namespace LocalApi.Test.ControllerFactoryFacts
         }
 
         [Fact]
+        public void should_create_controllers_by_its_name_case_insensitively()
+        {
+            var controllerTypes = new[] { typeof(ControllerWithPublicAction) };
+            HttpController controller = new DefaultControllerFactory().CreateController(
+                "controllerwithpublicaction",
+                controllerTypes,
+                new DefaultDependencyResolver(controllerTypes));
+
+            Assert.Equal(typeof(ControllerWithPublicAction), controller.GetType());
+        }
+
+        [Fact]
+        public void should_get_null_if_controller_name_partially_matched()
+        {
+            var controllerTypes = new[] { typeof(ControllerWithPublicAction) };
+            HttpController controller = new DefaultControllerFactory().CreateController(
+                "WithPublicAction",
+                controllerTypes,
+                new DefaultDependencyResolver(controllerTypes));
+
+            Assert.Null(controller);
+        }
+
+        [Fact]
         public void should_get_null_if_no_controller_type_is_found()
         {
             var controllerTypes = new Type[] { };

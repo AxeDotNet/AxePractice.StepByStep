@@ -10,7 +10,11 @@ namespace LocalApi
             ICollection<Type> controllerTypes,
             IDependencyResolver resolver)
         {
+            #region Please modify the following code to pass the test.
+
             throw new NotImplementedException();
+
+            #endregion
         }
     }
 }
