@@ -41,8 +41,10 @@
     <Compile Include="ControllerActionInvoker.cs" />
     <Compile Include="DefaultDependencyResolver.cs" />
     <Compile Include="HttpController.cs" />
+    <Compile Include="DefaultHttpControllerTypeResolver.cs" />
     <Compile Include="HttpRoute.cs" />
     <Compile Include="IDependencyResolver.cs" />
+    <Compile Include="IHttpControllerTypeResolver.cs" />
     <Compile Include="MethodAttributes\HttpDelete.cs" />
     <Compile Include="MethodAttributes\HttpGet.cs" />
     <Compile Include="MethodAttributes\HttpPost.cs" />

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace LocalApi
 {
@@ -15,14 +14,15 @@ namespace LocalApi
          * 
          * Since the controller is currently the entry point for handling request,
          * The default dependency resolver implementation will scan all the public
-         * non-abstract classes which implement HttpController interface.
+         * non-abstract classes which implement HttpController interface (using 
+         * DefaultHttpControllerTypeResolver).
          * 
          * The GetService method will try creating instance for specified types by
          * directly calling its default constructor. So any controller without a 
          * default constructor will not be supported.
          */
 
-        public DefaultDependencyResolver(IEnumerable<Assembly> assemblies)
+        internal DefaultDependencyResolver(IEnumerable<Type> controllerTypes)
         {
             throw new NotImplementedException();
         }

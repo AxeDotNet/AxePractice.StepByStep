@@ -13,7 +13,8 @@ namespace LocalApi.Test.DependencyResolverFacts.DefaultImpl
         [Fact]
         public void should_get_service_if_type_exist()
         {
-            var resolver = new DefaultDependencyResolver(ControllerAssemblies);
+            var controllerTypeResolver = new DefaultHttpControllerTypeResolver();
+            var resolver = new DefaultDependencyResolver(controllerTypeResolver.GetControllerTypes(ControllerAssemblies));
             Assert.Equal(
                 typeof(ControllerWithoutAction), 
                 resolver.GetService(typeof(ControllerWithoutAction)).GetType());
@@ -22,7 +23,8 @@ namespace LocalApi.Test.DependencyResolverFacts.DefaultImpl
         [Fact]
         public void should_not_get_service_if_type_not_exist()
         {
-            var resolver = new DefaultDependencyResolver(ControllerAssemblies);
+            var controllerTypeResolver = new DefaultHttpControllerTypeResolver();
+            var resolver = new DefaultDependencyResolver(controllerTypeResolver.GetControllerTypes(ControllerAssemblies));
             Assert.Null(resolver.GetService(typeof(NotExistedType)));
         }
     }
