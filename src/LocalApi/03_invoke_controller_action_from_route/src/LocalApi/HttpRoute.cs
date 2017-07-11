@@ -5,15 +5,15 @@ namespace LocalApi
 {
     public class HttpRoute
     {
-        public HttpRoute(Type controllerType, string actionName, HttpMethod method)
+        public HttpRoute(Type controllerType, string actionName, HttpMethod methodConstraint)
         {
             ControllerType = controllerType;
             ActionName = actionName;
-            Method = method;
+            MethodConstraint = methodConstraint;
         }
 
         public Type ControllerType { get; }
         public string ActionName { get; }
-        public HttpMethod Method { get; }
+        public HttpMethod MethodConstraint { get; }
     }
 }

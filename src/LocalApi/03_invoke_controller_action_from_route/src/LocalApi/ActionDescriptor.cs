@@ -4,15 +4,15 @@ namespace LocalApi
 {
     public class ActionDescriptor
     {
-        public ActionDescriptor(HttpController controller, string actionName, HttpMethod method)
+        public ActionDescriptor(HttpController controller, string actionName, HttpMethod methodConstraint)
         {
             Controller = controller;
             ActionName = actionName;
-            Method = method;
+            MethodConstraint = methodConstraint;
         }
 
         public HttpController Controller { get; }
         public string ActionName { get; }
-        public HttpMethod Method { get; }
+        public HttpMethod MethodConstraint { get; }
     }
 }

@@ -25,7 +25,7 @@ namespace LocalApi
 
         public static HttpResponseMessage InvokeAction(HttpRoute matchedRoute, IDependencyResolver resolver)
         {
-            return InvokeActionInternal(new ActionDescriptor(null, matchedRoute.ActionName, matchedRoute.Method));
+            return InvokeActionInternal(new ActionDescriptor(null, matchedRoute.ActionName, matchedRoute.MethodConstraint));
         }
 
         #endregion
@@ -35,7 +35,7 @@ namespace LocalApi
             MethodInfo method = GetAction(actionDescriptor);
             if (method == null) { return new HttpResponseMessage(HttpStatusCode.NotFound); }
 
-            HttpResponseMessage errorResponse = ProcessConstraint(method, actionDescriptor.Method);
+            HttpResponseMessage errorResponse = ProcessConstraint(method, actionDescriptor.MethodConstraint);
             if (errorResponse != null) { return errorResponse; }
 
             return Execute(actionDescriptor, method);
