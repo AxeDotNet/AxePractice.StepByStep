@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 
 namespace LocalApi
 {
@@ -12,10 +13,12 @@ namespace LocalApi
          * This class is used to get all types that is non-abstract public controller
          * from given assemblies.
          */
-        
+
         public ICollection<Type> GetControllerTypes(IEnumerable<Assembly> assemblies)
         {
-            throw new NotImplementedException();
+            return assemblies.SelectMany(a => a.GetTypes())
+                .Where(t => t.IsPublic && !t.IsAbstract && t.IsSubclassOf(typeof(HttpController)))
+                .ToList();
         }
 
         #endregion
