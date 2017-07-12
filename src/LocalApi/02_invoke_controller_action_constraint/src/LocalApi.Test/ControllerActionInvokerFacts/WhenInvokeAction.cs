@@ -103,7 +103,7 @@ namespace LocalApi.Test.ControllerActionInvokerFacts
         {
             HttpResponseMessage response = ControllerActionInvoker.InvokeAction(
                 new ActionDescriptor(new ControllerWithErrorAction(), "Get", HttpMethod.Get));
-            
+
             Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
@@ -123,8 +123,8 @@ namespace LocalApi.Test.ControllerActionInvokerFacts
         {
             HttpResponseMessage response = ControllerActionInvoker.InvokeAction(
                 new ActionDescriptor(
-                    new ControllerWithMultipleMethodAnnotation(), 
-                    "Invoke", 
+                    new ControllerWithMultipleMethodAnnotation(),
+                    "Invoke",
                     new HttpMethod(method)));
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
