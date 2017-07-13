@@ -70,22 +70,20 @@ namespace LocalApi
             return matchConstraint ? null : new HttpResponseMessage(HttpStatusCode.MethodNotAllowed);
         }
 
+        #region Please implement the method to pass all the tests
+
+        /*
+         * You have to re-implement this method becuase it should support sync/async controller
+         * actions. You can distinguish them by their return value type. The Type of the sync one is 
+         * HttpResponseMessage, while the Type of async return value is Task<HttpResponseMessage>.
+         */
+
         static Task<HttpResponseMessage> Execute(ActionDescriptor actionDescriptor, MethodInfo method)
         {
-            try
-            {
-                object result = method.Invoke(actionDescriptor.Controller, null);
-                var task = result as Task<HttpResponseMessage>;
-                if (task != null) { return task;}
-                var response = result as HttpResponseMessage;
-                if (response != null) { return Task.FromResult(response); }
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.InternalServerError));
-            }
-            catch
-            {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.InternalServerError));
-            }
+            throw new NotImplementedException();
         }
+
+        #endregion
 
         static MethodInfo GetAction(ActionDescriptor actionDescriptor)
         {
