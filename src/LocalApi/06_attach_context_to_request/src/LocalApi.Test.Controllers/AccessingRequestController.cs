@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using LocalApi.MethodAttributes;
 
 namespace LocalApi.Test.Controllers
@@ -12,6 +13,15 @@ namespace LocalApi.Test.Controllers
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent($"client is accessing {Request.RequestUri}.")
+            };
+        }
+
+        [HttpPost]
+        public async Task<HttpResponseMessage> GetRequestContent()
+        {
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(await Request.Content.ReadAsStringAsync())
             };
         }
     }

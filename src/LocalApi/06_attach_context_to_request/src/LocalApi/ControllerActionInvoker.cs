@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Threading.Tasks;
 using LocalApi.MethodAttributes;
 using LocalApi.Routing;
 
@@ -10,7 +11,7 @@ namespace LocalApi
 {
     static class ControllerActionInvoker
     {
-        public static HttpResponseMessage InvokeAction(
+        public static Task<HttpResponseMessage> InvokeAction(
             HttpRequestMessage request)
         {
             HttpController controller;
@@ -33,27 +34,30 @@ namespace LocalApi
 
                 if (controller == null)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
+                    return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound));
                 }
 
                 controller.Request = request;
             }
             catch (ArgumentException)
             {
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.InternalServerError));
             }
 
             return InvokeActionInternal(
-                new ActionDescriptor(controller, matchedRoute.ActionName, matchedRoute.MethodConstraint));
+                new ActionDescriptor(
+                    controller,
+                    matchedRoute.ActionName,
+                    matchedRoute.MethodConstraint));
         }
 
-        static HttpResponseMessage InvokeActionInternal(ActionDescriptor actionDescriptor)
+        static Task<HttpResponseMessage> InvokeActionInternal(ActionDescriptor actionDescriptor)
         {
             MethodInfo method = GetAction(actionDescriptor);
-            if (method == null) { return new HttpResponseMessage(HttpStatusCode.NotFound); }
+            if (method == null) { return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound)); }
 
             HttpResponseMessage errorResponse = ProcessConstraint(method, actionDescriptor.MethodConstraint);
-            if (errorResponse != null) { return errorResponse; }
+            if (errorResponse != null) { return Task.FromResult(errorResponse); }
 
             return Execute(actionDescriptor, method);
         }
@@ -66,15 +70,20 @@ namespace LocalApi
             return matchConstraint ? null : new HttpResponseMessage(HttpStatusCode.MethodNotAllowed);
         }
 
-        static HttpResponseMessage Execute(ActionDescriptor actionDescriptor, MethodInfo method)
+        static Task<HttpResponseMessage> Execute(ActionDescriptor actionDescriptor, MethodInfo method)
         {
             try
             {
-                return (HttpResponseMessage) method.Invoke(actionDescriptor.Controller, null);
+                object result = method.Invoke(actionDescriptor.Controller, null);
+                var task = result as Task<HttpResponseMessage>;
+                if (task != null) { return task;}
+                var response = result as HttpResponseMessage;
+                if (response != null) { return Task.FromResult(response); }
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.InternalServerError));
             }
             catch
             {
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.InternalServerError));
             }
         }
 

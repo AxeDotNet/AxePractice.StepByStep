@@ -16,24 +16,23 @@ namespace LocalApi
             this.configuration = configuration;
         }
 
-        protected override Task<HttpResponseMessage> SendAsync(
+        protected override async Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, CancellationToken cancellationToken)
         {
             HttpRoute matchedRoute = configuration.Routes.GetRouteData(request);
             if (matchedRoute == null)
             {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound));
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
-            
+
             try
             {
                 request.SetRequestContext(configuration, matchedRoute);
-                HttpResponseMessage response = ControllerActionInvoker.InvokeAction(request);
-                return Task.FromResult(response);
+                return await ControllerActionInvoker.InvokeAction(request);
             }
             catch (Exception)
             {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
     }
