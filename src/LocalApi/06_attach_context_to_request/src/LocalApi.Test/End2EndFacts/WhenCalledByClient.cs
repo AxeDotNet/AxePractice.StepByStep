@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
@@ -15,31 +13,10 @@ namespace LocalApi.Test.End2EndFacts
     {
         Assembly[] ControllerAssemblies => new[] { typeof(ControllerWithPublicAction).Assembly };
 
-        static HttpServer PrepareHttpServer(IEnumerable<Assembly> assemblies, params HttpRoute[] routes)
-        {
-            var config = new HttpConfiguration(assemblies);
-            foreach (HttpRoute route in routes)
-            {
-                config.Routes.Add(route);
-            }
-
-            config.EnsureInitialized();
-            return new HttpServer(config);
-        }
-
-        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-        static async Task AssertStringContent(HttpClient client, string uri, string expected)
-        {
-            HttpResponseMessage response = await client.GetAsync(uri);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            string content = await response.Content.ReadAsStringAsync();
-            Assert.Equal(expected, content);
-        }
-
         [Fact]
         public async Task should_get_ok_if_route_is_defined()
         {
-            HttpServer httpServer = PrepareHttpServer(
+            HttpServer httpServer = HttpServerTestHelper.PrepareHttpServer(
                 ControllerAssemblies,
                 new HttpRoute(
                     "ControllerWithPublicAction",
@@ -58,7 +35,7 @@ namespace LocalApi.Test.End2EndFacts
         [Fact]
         public async Task should_get_not_found_if_no_route_matches()
         {
-            HttpServer httpServer = PrepareHttpServer(ControllerAssemblies);
+            HttpServer httpServer = HttpServerTestHelper.PrepareHttpServer(ControllerAssemblies);
 
             using (httpServer)
             using (var client = new HttpClient(httpServer))
@@ -72,7 +49,7 @@ namespace LocalApi.Test.End2EndFacts
         [Fact]
         public async Task should_get_not_found_if_constraint_mismatch()
         {
-            HttpServer httpServer = PrepareHttpServer(
+            HttpServer httpServer = HttpServerTestHelper.PrepareHttpServer(
                 ControllerAssemblies,
                 new HttpRoute(
                     "ControllerWithPublicAction",
@@ -92,7 +69,7 @@ namespace LocalApi.Test.End2EndFacts
         [Fact]
         public async Task should_get_method_not_allowed_if_constraint_annotation_mismatch()
         {
-            HttpServer httpServer = PrepareHttpServer(
+            HttpServer httpServer = HttpServerTestHelper.PrepareHttpServer(
                 ControllerAssemblies,
                 new HttpRoute(
                     "ControllerWithMismatchedMethod",
@@ -112,7 +89,7 @@ namespace LocalApi.Test.End2EndFacts
         [Fact]
         public async Task should_return_internal_server_error_if_ambiguous_found()
         {
-            var httpServer = PrepareHttpServer(
+            var httpServer = HttpServerTestHelper.PrepareHttpServer(
                 ControllerAssemblies,
                 new HttpRoute(
                     "AmbiguousController",
@@ -131,7 +108,7 @@ namespace LocalApi.Test.End2EndFacts
         [Fact]
         public async Task should_return_not_found_if_no_controller_is_found()
         {
-            var httpServer = PrepareHttpServer(
+            var httpServer = HttpServerTestHelper.PrepareHttpServer(
                 Array.Empty<Assembly>(),
                 new HttpRoute("ControllerWithoutAction", "Get", HttpMethod.Get, "no-controller"));
 
@@ -146,7 +123,7 @@ namespace LocalApi.Test.End2EndFacts
         [Fact]
         public async Task should_only_cares_on_public_controller()
         {
-            var httpServer = PrepareHttpServer(
+            var httpServer = HttpServerTestHelper.PrepareHttpServer(
                 ControllerAssemblies,
                 new HttpRoute("NonPublicController", "Get", HttpMethod.Get, "non-public"));
 
@@ -161,7 +138,7 @@ namespace LocalApi.Test.End2EndFacts
         [Fact]
         public async Task should_only_invoke_public_instance_action()
         {
-            var httpServer = PrepareHttpServer(
+            var httpServer = HttpServerTestHelper.PrepareHttpServer(
                 ControllerAssemblies,
                 new HttpRoute(
                     "ControllerWithNonPublicAction",
@@ -181,7 +158,7 @@ namespace LocalApi.Test.End2EndFacts
         [Fact]
         public async Task should_invoke_case_insensitively()
         {
-            var httpServer = PrepareHttpServer(
+            var httpServer = HttpServerTestHelper.PrepareHttpServer(
                 ControllerAssemblies,
                 new HttpRoute(
                     "controllerwithpublicaction",
@@ -201,7 +178,7 @@ namespace LocalApi.Test.End2EndFacts
         [Fact]
         public async Task should_get_internal_server_error_when_exception_occurs()
         {
-            var httpServer = PrepareHttpServer(
+            var httpServer = HttpServerTestHelper.PrepareHttpServer(
                 ControllerAssemblies,
                 new HttpRoute("ControllerWithErrorAction", "Get", HttpMethod.Get, "error"));
 
@@ -219,7 +196,7 @@ namespace LocalApi.Test.End2EndFacts
         [InlineData("POST")]
         public async Task should_invoke_method_with_multiple_methods(string method)
         {
-            var httpServer = PrepareHttpServer(
+            var httpServer = HttpServerTestHelper.PrepareHttpServer(
                 ControllerAssemblies,
                 new HttpRoute(
                     "ControllerWithMultipleMethodAnnotation",
@@ -239,7 +216,7 @@ namespace LocalApi.Test.End2EndFacts
         [Fact]
         public async Task should_return_method_not_allowed_for_non_annotated_method()
         {
-            var httpServer = PrepareHttpServer(
+            var httpServer = HttpServerTestHelper.PrepareHttpServer(
                 ControllerAssemblies,
                 new HttpRoute("ControllerWithoutMethodAnnotation", "Get", HttpMethod.Get, "no-annotation"));
 
@@ -254,7 +231,7 @@ namespace LocalApi.Test.End2EndFacts
         [Fact]
         public async Task should_get_first_matched_route()
         {
-            HttpServer httpServer = PrepareHttpServer(
+            HttpServer httpServer = HttpServerTestHelper.PrepareHttpServer(
                 ControllerAssemblies,
                 new HttpRoute(
                     "ControllerWith2DifferentActions",
@@ -269,14 +246,14 @@ namespace LocalApi.Test.End2EndFacts
             using (httpServer)
             using (var client = new HttpClient(httpServer))
             {
-                await AssertStringContent(client, "http://www.base.com/resource", "get resource 1");
+                await HttpServerTestHelper.AssertStringContent(client, "http://www.base.com/resource", "get resource 1");
             }
         }
 
         [Fact]
         public async Task should_distinguish_resources()
         {
-            HttpServer httpServer = PrepareHttpServer(
+            HttpServer httpServer = HttpServerTestHelper.PrepareHttpServer(
                 ControllerAssemblies,
                 new HttpRoute(
                     "ControllerWith2DifferentActions",
@@ -291,8 +268,8 @@ namespace LocalApi.Test.End2EndFacts
             using (httpServer)
             using (var client = new HttpClient(httpServer))
             {
-                await AssertStringContent(client, "http://www.base.com/resource1", "get resource 1");
-                await AssertStringContent(client, "http://www.base.com/resource2", "get resource 2");
+                await HttpServerTestHelper.AssertStringContent(client, "http://www.base.com/resource1", "get resource 1");
+                await HttpServerTestHelper.AssertStringContent(client, "http://www.base.com/resource2", "get resource 2");
             }
         }
     }

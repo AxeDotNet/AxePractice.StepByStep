@@ -27,11 +27,8 @@ namespace LocalApi
             
             try
             {
-                HttpResponseMessage response = ControllerActionInvoker.InvokeAction(
-                    matchedRoute,
-                    configuration.CachedControllerTypes,
-                    configuration.DependencyResolver,
-                    configuration.ControllerFactory);
+                request.SetRequestContext(configuration, matchedRoute);
+                HttpResponseMessage response = ControllerActionInvoker.InvokeAction(request);
                 return Task.FromResult(response);
             }
             catch (Exception)

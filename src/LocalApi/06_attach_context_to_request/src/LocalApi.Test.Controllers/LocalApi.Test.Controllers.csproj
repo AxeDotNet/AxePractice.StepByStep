@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessingRequestController.cs" />
     <Compile Include="Ambiguous\AmbiguousController.cs" />
     <Compile Include="ControllerWith2DifferentActions.cs" />
     <Compile Include="ControllerWithErrorAction.cs" />

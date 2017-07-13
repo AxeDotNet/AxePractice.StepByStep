@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,28 +11,36 @@ namespace LocalApi
     static class ControllerActionInvoker
     {
         public static HttpResponseMessage InvokeAction(
-            HttpRoute matchedRoute,
-            ICollection<Type> controllerTypes,
-            IDependencyResolver resolver,
-            IControllerFactory controllerFactory)
+            HttpRequestMessage request)
         {
             HttpController controller;
 
+            HttpRequestContext context = request.GetRequestContext();
+            if (context == null)
+            {
+                throw new InvalidOperationException("Cannot find request context");
+            }
+
+            HttpRoute matchedRoute = context.MatchedRoute;
+            HttpConfiguration configuration = context.Configuration;
+
             try
             {
-                controller = controllerFactory.CreateController(
+                controller = configuration.ControllerFactory.CreateController(
                     matchedRoute.ControllerName,
-                    controllerTypes,
-                    resolver);
+                    configuration.CachedControllerTypes,
+                    configuration.DependencyResolver);
+
+                if (controller == null)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.NotFound);
+                }
+
+                controller.Request = request;
             }
             catch (ArgumentException)
             {
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError);
-            }
-
-            if (controller == null)
-            {
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
 
             return InvokeActionInternal(

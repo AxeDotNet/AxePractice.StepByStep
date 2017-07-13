@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="ControllerFactoryFacts\WhenCreateControllers.cs" />
     <Compile Include="DependencyResolverFacts\DefaultImpl\WhenGetService.cs" />
+    <Compile Include="End2EndFacts\HttpServerTestHelper.cs" />
+    <Compile Include="End2EndFacts\WhenAccessingRequestFromAction.cs" />
     <Compile Include="End2EndFacts\WhenCalledByClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoutingFacts\WhenAddingRoute.cs" />
