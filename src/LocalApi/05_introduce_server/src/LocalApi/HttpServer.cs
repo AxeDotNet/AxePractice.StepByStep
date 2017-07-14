@@ -27,17 +27,12 @@ namespace LocalApi
         protected override Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            HttpRoute route;
-
-            try
-            {
-                route = configuration.Routes.GetRouteData(request);
-            }
-            catch
+            if (request == null)
             {
                 return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound));
             }
 
+            var route = configuration.Routes.GetRouteData(request);
             if (route == null)
             {
                 return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound));
