@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using LocalApi.MethodAttributes;
@@ -23,6 +24,13 @@ namespace LocalApi.Test.Controllers
             {
                 Content = new StringContent(await Request.Content.ReadAsStringAsync())
             };
+        }
+
+        [HttpGet]
+        public async Task<HttpResponseMessage> GetWithError()
+        {
+            await Task.Delay(10);
+            throw new ApplicationException();
         }
     }
 }

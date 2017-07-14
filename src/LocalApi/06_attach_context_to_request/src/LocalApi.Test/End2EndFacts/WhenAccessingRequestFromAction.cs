@@ -46,5 +46,25 @@ namespace LocalApi.Test.End2EndFacts
                 Assert.Equal(expected, content);
             }
         }
+
+        [Fact]
+        public async Task should_get_internal_server_error_for_error()
+        {
+            HttpServer server = HttpServerTestHelper.PrepareHttpServer(
+                ControllerAssemblies,
+                new HttpRoute(
+                    "AccessingRequestController",
+                    "GetWithError",
+                    HttpMethod.Get,
+                    "resource"));
+            using (server)
+            using (var client = new HttpClient(server))
+            {
+                HttpResponseMessage response = await client.GetAsync(
+                    "http://www.base.com/resource");
+
+                Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+            }
+        }
     }
 };
