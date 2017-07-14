@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 
 namespace LocalApi.Routing
 {
     public class HttpRouteCollection
     {
+        IList<HttpRoute> httpRoutes = new List<HttpRoute>();
+
         #region Please implement the following method to pass the test
 
         /*
@@ -15,12 +19,27 @@ namespace LocalApi.Routing
 
         public void Add(HttpRoute route)
         {
-            throw new NotImplementedException();
+            if (route == null)
+            {
+                throw new ArgumentNullException(nameof(route));
+            }
+
+            if (route.UriTemplate == null)
+            {
+                throw new ArgumentException(nameof(route.UriTemplate));
+            }
+
+            httpRoutes.Add(route);
         }
 
         public HttpRoute GetRouteData(HttpRequestMessage request)
         {
-            throw new NotImplementedException();
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return httpRoutes.FirstOrDefault(r => r.IsMatch(request.RequestUri, request.Method));
         }
 
         #endregion
