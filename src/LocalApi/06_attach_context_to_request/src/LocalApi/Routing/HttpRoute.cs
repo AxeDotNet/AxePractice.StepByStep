@@ -18,12 +18,13 @@ namespace LocalApi.Routing
 
         public HttpRoute(string controllerName, string actionName, HttpMethod methodConstraint, string uriTemplate)
         {
+            if (methodConstraint == null) { throw new ArgumentNullException(nameof(methodConstraint)); }
             ValidateIdentifier(controllerName, nameof(controllerName));
             ValidateIdentifier(actionName, nameof(actionName));
 
             ControllerName = controllerName;
             ActionName = actionName;
-            MethodConstraint = methodConstraint ?? throw new ArgumentNullException(nameof(methodConstraint));
+            MethodConstraint = methodConstraint;
             UriTemplate = uriTemplate;
         }
 
