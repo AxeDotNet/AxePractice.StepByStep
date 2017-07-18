@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Manualfac.Services;
 
 namespace Manualfac.Activators
 {
@@ -15,21 +11,20 @@ namespace Manualfac.Activators
             this.serviceType = serviceType;
         }
 
+        #region Please modify the following code to pass the test
+
+        /*
+         * This method create instance via reflection. Try evaluating its parameters and
+         * inject them using componentContext.
+         * 
+         * No public members are allowed to add.
+         */
+
         public object Activate(IComponentContext componentContext)
         {
-            ConstructorInfo[] constructors = serviceType.GetConstructors(
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-            if (constructors.Length != 1)
-            {
-                throw new DependencyResolutionException("I do not know which ctor to call.");
-            }
-
-            ConstructorInfo ctor = constructors[0];
-            ParameterInfo[] parameterInfos = ctor.GetParameters();
-            IEnumerable<object> parameters = parameterInfos.Select(
-                p => componentContext.ResolveComponent(new TypedService(p.ParameterType)));
-
-            return ctor.Invoke(parameters.ToArray());
+            throw new NotImplementedException();
         }
+
+        #endregion
     }
 }
