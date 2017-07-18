@@ -16,7 +16,15 @@ namespace Manualfac
 
         public IRegistrationBuilder Named<TService>(string name)
         {
+            #region Please modify the code to pass the test
+
+            /*
+             * Please support registration using both type and name.
+             */
+
             throw new NotImplementedException();
+
+            #endregion
         }
 
         public ComponentRegistration Build()

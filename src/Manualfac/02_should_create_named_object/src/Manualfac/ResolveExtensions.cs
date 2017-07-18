@@ -15,7 +15,11 @@ namespace Manualfac
             this IComponentContext componentContext,
             string name)
         {
+            #region Please modify the code to pass the test
+
             throw new NotImplementedException();
+
+            #endregion
         }
     }
 }

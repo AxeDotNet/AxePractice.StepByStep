@@ -2,8 +2,19 @@
 
 namespace Manualfac.Services
 {
-    public class TypedNameService : IEquatable<TypedNameService>
+    class TypedNameService : Service, IEquatable<TypedNameService>
     {
+        #region Please modify the following code to pass the test
+
+        /*
+         * This class is used as a key for registration using both type and name.
+         */
+
+        public TypedNameService(Type serviceType, string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Equals(TypedNameService other)
         {
             throw new NotImplementedException();
@@ -18,5 +29,7 @@ namespace Manualfac.Services
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

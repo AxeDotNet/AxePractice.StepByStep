@@ -2,7 +2,7 @@
 
 namespace Manualfac.Services
 {
-    public class TypedService : Service, IEquatable<TypedService>
+    class TypedService : Service, IEquatable<TypedService>
     {
         readonly Type serviceType;
 
