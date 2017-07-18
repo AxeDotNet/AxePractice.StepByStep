@@ -1,5 +1,4 @@
 ﻿using System;
-using Manualfac.Services;
 
 namespace Manualfac
 {
@@ -10,8 +9,15 @@ namespace Manualfac
 
         public IRegistrationBuilder As<TService>()
         {
-            Service = new TypedService(typeof(TService));
-            return this;
+            #region Please modify the code to pass the test
+
+            /*
+             * Please support registration by type.
+             */
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public IRegistrationBuilder Named<TService>(string name)
@@ -19,7 +25,7 @@ namespace Manualfac
             #region Please modify the code to pass the test
 
             /*
-             * Please support registration using both type and name.
+             * Please support registration by both type and name.
              */
 
             throw new NotImplementedException();

@@ -7,7 +7,7 @@ namespace Manualfac.Services
         #region Please modify the following code to pass the test
 
         /*
-         * This class is used as a key for registration using both type and name.
+         * This class is used as a key for registration by both type and name.
          */
 
         public TypedNameService(Type serviceType, string name)
