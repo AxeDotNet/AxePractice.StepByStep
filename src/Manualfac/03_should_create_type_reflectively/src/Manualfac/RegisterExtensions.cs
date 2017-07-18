@@ -1,4 +1,5 @@
 ﻿using System;
+using Manualfac.Activators;
 using Manualfac.Services;
 
 namespace Manualfac
@@ -14,13 +15,17 @@ namespace Manualfac
             return cb.RegisterComponent(
                 new ComponentRegistration(
                     new TypedService(typeof(T)),
-                    c => func(c)));
+                    new DelegatedInstanceActivator(c => func(c))));
         }
 
         public static IRegistrationBuilder RegisterType<T>(
             this ContainerBuilder cb)
         {
-            throw new NotImplementedException();
+            if (cb == null) { throw new ArgumentNullException(nameof(cb)); }
+            return cb.RegisterComponent(
+                new ComponentRegistration(
+                    new TypedService(typeof(T)),
+                    new ReflectiveActivator(typeof(T))));
         }
     }
 }

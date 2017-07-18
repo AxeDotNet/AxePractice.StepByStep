@@ -1,13 +1,14 @@
 ﻿using System;
+using Manualfac.Activators;
 
 namespace Manualfac
 {
     public class ComponentRegistration
     {
         public Service Service { get; }
-        public Func<IComponentContext, object> Activator { get; }
+        public IInstanceActivator Activator { get; }
 
-        public ComponentRegistration(Service service, Func<IComponentContext, object> activator)
+        public ComponentRegistration(Service service, IInstanceActivator activator)
         {
             if (service == null) { throw new ArgumentNullException(nameof(service)); }
             if (activator == null) { throw new ArgumentNullException(nameof(activator)); }

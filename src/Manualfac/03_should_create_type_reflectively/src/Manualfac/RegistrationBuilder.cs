@@ -1,4 +1,5 @@
 ﻿using System;
+using Manualfac.Activators;
 using Manualfac.Services;
 
 namespace Manualfac
@@ -6,7 +7,7 @@ namespace Manualfac
     class RegistrationBuilder : IRegistrationBuilder
     {
         public Service Service { get; set; }
-        public Func<IComponentContext, object> Activator { get; set; }
+        public IInstanceActivator Activator { get; set; }
 
         public IRegistrationBuilder As<TService>()
         {

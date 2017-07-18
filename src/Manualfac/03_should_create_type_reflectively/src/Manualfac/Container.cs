@@ -18,7 +18,7 @@ namespace Manualfac
             }
 
             ComponentRegistration componentRegistration = registrations[service];
-            return componentRegistration.Activator(this);
+            return componentRegistration.Activator.Activate(this);
         }
 
         public void Register(ComponentRegistration registration)

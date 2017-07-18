@@ -38,6 +38,33 @@ namespace Manualfac.Test
             }
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
+        [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
+        class ParentWithOnePublicCtor
+        {
+            public Dependency1 D1 { get; }
+            public Dependency2 D2 { get; }
+
+            public ParentWithOnePublicCtor(Dependency1 d1, Dependency2 d2)
+            {
+                D1 = d1;
+                D2 = d2;
+            }
+
+            ParentWithOnePublicCtor()
+            {
+            }
+        }
+
+        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
+        [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
+        class ParentWithoutPublicCtor
+        {
+            ParentWithoutPublicCtor(Dependency1 d1)
+            {
+            }
+        }
+
         [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
         [SuppressMessage("ReSharper", "UnusedMember.Local")]
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
@@ -225,6 +252,38 @@ namespace Manualfac.Test
             IComponentContext container = cb.Build();
             Assert.Throws<DependencyResolutionException>(
                 () => container.Resolve<ParentWithMultipleCtor>());
+        }
+
+        [Fact]
+        public void RegisterTypeWithoutPublicCtor()
+        {
+            var cb = new ContainerBuilder();
+            var dependency1 = new Dependency1();
+            var dependency2 = new Dependency2();
+            cb.Register(_ => dependency1);
+            cb.Register(_ => dependency2);
+            cb.RegisterType<ParentWithoutPublicCtor>();
+
+            IComponentContext container = cb.Build();
+            Assert.Throws<DependencyResolutionException>(
+                () => container.Resolve<ParentWithoutPublicCtor>());
+        }
+
+        [Fact]
+        public void RegisterTypeWithOnePublicCtor()
+        {
+            var cb = new ContainerBuilder();
+            var dependency1 = new Dependency1();
+            var dependency2 = new Dependency2();
+            cb.Register(_ => dependency1);
+            cb.Register(_ => dependency2);
+            cb.RegisterType<ParentWithOnePublicCtor>();
+
+            IComponentContext container = cb.Build();
+            var instance = container.Resolve<ParentWithOnePublicCtor>();
+
+            Assert.Equal(dependency1, instance.D1);
+            Assert.Equal(dependency2, instance.D2);
         }
     }
 }
