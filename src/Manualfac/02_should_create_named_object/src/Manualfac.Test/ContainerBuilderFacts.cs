@@ -36,7 +36,7 @@ namespace Manualfac.Test
             var cb = new ContainerBuilder();
             cb.Register(_ => new Abc());
             IComponentContext c = cb.Build();
-            var a = c.ResolveComponent(typeof(Abc));
+            var a = c.Resolve<Abc>();
             Assert.NotNull(a);
             Assert.IsType<Abc>(a);
         }
@@ -47,10 +47,10 @@ namespace Manualfac.Test
             var cb = new ContainerBuilder();
             cb.Register(_ => new Abc()).As<IA>();
             var c = cb.Build();
-            var a = c.ResolveComponent(typeof(IA));
+            var a = c.Resolve<IA>();
             Assert.NotNull(a);
             Assert.IsType<Abc>(a);
-            Assert.Throws<DependencyResolutionException>(() => c.ResolveComponent(typeof(Abc)));
+            Assert.Throws<DependencyResolutionException>(() => c.Resolve<Abc>());
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace Manualfac.Test
             var inst2 = new object();
             target.Register(_ => inst1);
             target.Register(_ => inst2);
-            Assert.Same(inst2, target.Build().ResolveComponent(typeof(object)));
+            Assert.Same(inst2, target.Build().Resolve<object>());
         }
 
         [Fact]
@@ -85,12 +85,28 @@ namespace Manualfac.Test
             target.Register(_ => forIC).As<IC>();
 
             var container = target.Build();
-            var a = container.ResolveComponent(typeof(IA));
-            var b = container.ResolveComponent(typeof(IB));
-            var c = container.ResolveComponent(typeof(IC));
+            var a = container.Resolve<IA>();
+            var b = container.Resolve<IB>();
+            var c = container.Resolve<IC>();
             Assert.Same(forIA, a);
             Assert.Same(forIB, b);
             Assert.Same(forIC, c);
+        }
+
+        [Fact]
+        public void RegisterWithName()
+        {
+            var name = "object.registration";
+            var @object = new object();
+            var cb = new ContainerBuilder();
+            cb.Register(_ => @object).Named<object>(name);
+
+            var c = cb.Build();
+
+            object o1 = c.ResolveNamed<object>(name);
+            Assert.Same(@object, o1);
+            
+            Assert.Throws<DependencyResolutionException>(() => c.Resolve<object>());
         }
     }
 }

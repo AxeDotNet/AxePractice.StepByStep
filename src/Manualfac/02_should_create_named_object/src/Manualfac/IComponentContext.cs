@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace Manualfac
+﻿namespace Manualfac
 {
     public interface IComponentContext
     {
-        object ResolveComponent(Type type);
+        object ResolveComponent(Service type);
     }
 }

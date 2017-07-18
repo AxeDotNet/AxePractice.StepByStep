@@ -35,13 +35,19 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComponentContext.cs" />
+    <Compile Include="Container.cs" />
     <Compile Include="ContainerBuilder.cs" />
     <Compile Include="DependencyResolutionException.cs" />
     <Compile Include="IComponentContext.cs" />
+    <Compile Include="ComponentRegistration.cs" />
     <Compile Include="IRegistrationBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistrationBuilder.cs" />
+    <Compile Include="ResolveExtensions.cs" />
+    <Compile Include="Service.cs" />
+    <Compile Include="Services\TypedNameService.cs" />
+    <Compile Include="Services\TypedService.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
