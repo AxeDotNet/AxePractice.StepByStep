@@ -34,15 +34,20 @@ namespace Manualfac
             this ContainerBuilder cb,
             ComponentRegistration registration)
         {
-            if (registration == null) { throw new ArgumentNullException(nameof(registration)); }
-            var builder = new RegistrationBuilder
-            {
-                Activator = registration.Activator,
-                Service = registration.Service
-            };
+            #region Please re-implement the code to pass the test
 
-            cb.RegisterCallback(cr => cr.Register(builder.Build()));
-            return builder;
+            /*
+             * Since we have create a concrete type ComponentRegistry to manage the registion
+             * work, all the registration operation can be considered as an action that add
+             * somekind of component registration to the registry.
+             * 
+             * In order to reuse the code, we re-implement the extension method to replace the
+             * instance member function.
+             */
+
+            throw new NotImplementedException();
+
+            #endregion
         }
     }
 }

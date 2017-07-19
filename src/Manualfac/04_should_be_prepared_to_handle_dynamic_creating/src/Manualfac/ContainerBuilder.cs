@@ -21,14 +21,18 @@ namespace Manualfac
                 throw new InvalidOperationException("The container has been built.");
             }
 
-            var registry = new ComponentRegistry();
-            foreach (Action<ComponentRegistry> callback in callbacks)
-            {
-                callback(registry);
-            }
+            #region Please implement the code to pass the test
 
-            hasBeenBuilt = true;
-            return new Container(registry);
+            /*
+             * Since all the build operation can be considered as constructing the
+             * ComponentRegistry. Please create a component registry and construct
+             * its data. Then attach the registry to Container.
+             * 
+             */
+
+            throw new NotImplementedException();
+
+            #endregion
         }
     }
 }

@@ -10,20 +10,30 @@ namespace Manualfac
 
         public void Register(ComponentRegistration registration)
         {
-            if (registration == null) { throw new ArgumentNullException(nameof(registration)); }
-            serviceInfos[registration.Service] = registration;
+            #region Please implement the code to pass the test
+
+            /*
+             * We have moved the odd method from Container to ComponentRegistry. Please
+             * implement the method.
+             */
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public bool TryGetRegistration(Service service, out ComponentRegistration registration)
         {
-            if (serviceInfos.ContainsKey(service))
-            {
-                registration = serviceInfos[service];
-                return true;
-            }
+            #region Please implement the code to pass the test
+
+            /*
+             * Please implement the method to get registration from the registered services.
+             */
 
             registration = null;
-            return false;
+            throw new NotImplementedException();
+
+            #endregion
         }
     }
 }
