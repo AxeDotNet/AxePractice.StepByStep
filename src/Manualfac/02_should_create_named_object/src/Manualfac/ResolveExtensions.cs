@@ -17,7 +17,7 @@ namespace Manualfac
         {
             #region Please modify the code to pass the test
 
-            throw new NotImplementedException();
+            return (T) componentContext.ResolveComponent(new TypedNameService(typeof(T), name));
 
             #endregion
         }
