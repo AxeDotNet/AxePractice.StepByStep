@@ -5,20 +5,13 @@ namespace Manualfac
 {
     public class ContainerBuilder
     {
-        readonly List<IRegistrationBuilder> registrations = new List<IRegistrationBuilder>();
+        readonly List<Action<ComponentRegistry>> callbacks = new List<Action<ComponentRegistry>>();
         bool hasBeenBuilt;
 
-        public IRegistrationBuilder RegisterComponent(ComponentRegistration registration)
+        public void RegisterCallback(Action<ComponentRegistry> callback)
         {
-            if (registration == null) { throw new ArgumentNullException(nameof(registration)); }
-            var builder = new RegistrationBuilder
-            {
-                Activator = registration.Activator,
-                Service = registration.Service
-            };
-
-            registrations.Add(builder);
-            return builder;
+            if (callback == null) { throw new ArgumentNullException(nameof(callback)); }
+            callbacks.Add(callback);
         }
 
         public Container Build()
@@ -29,10 +22,9 @@ namespace Manualfac
             }
 
             var registry = new ComponentRegistry();
-            foreach (IRegistrationBuilder builder in registrations)
+            foreach (Action<ComponentRegistry> callback in callbacks)
             {
-                ComponentRegistration registration = builder.Build();
-                registry.Register(registration);
+                callback(registry);
             }
 
             hasBeenBuilt = true;

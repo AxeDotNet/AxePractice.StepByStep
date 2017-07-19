@@ -29,5 +29,20 @@ namespace Manualfac
                     new TypedService(typeof(T)),
                     new ReflectiveActivator(typeof(T))));
         }
+
+        public static IRegistrationBuilder RegisterComponent(
+            this ContainerBuilder cb,
+            ComponentRegistration registration)
+        {
+            if (registration == null) { throw new ArgumentNullException(nameof(registration)); }
+            var builder = new RegistrationBuilder
+            {
+                Activator = registration.Activator,
+                Service = registration.Service
+            };
+
+            cb.RegisterCallback(cr => cr.Register(builder.Build()));
+            return builder;
+        }
     }
 }
