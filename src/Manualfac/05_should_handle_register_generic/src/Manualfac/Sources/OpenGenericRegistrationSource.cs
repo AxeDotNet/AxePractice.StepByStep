@@ -22,8 +22,9 @@ namespace Manualfac.Sources
             Type resolutionServiceType = swt.ServiceType;
             if (!resolutionServiceType.IsConstructedGenericType) { return null; }
 
-            Type resolutionGenericDefinition = resolutionServiceType.GetGenericTypeDefinition();
-            if (!swt.ChangeType(resolutionGenericDefinition).Equals(genericService)) { return null; }
+            Type genericDefinitionForResolutionType =
+                resolutionServiceType.GetGenericTypeDefinition();
+            if (!swt.ChangeType(genericDefinitionForResolutionType).Equals(genericService)) { return null; }
 
             Type constructedImplementorGenericType = implementorType.MakeGenericType(
                 resolutionServiceType.GenericTypeArguments);
