@@ -1,4 +1,6 @@
 ﻿using System;
+using Manualfac.Activators;
+using Manualfac.Services;
 
 namespace Manualfac
 {
@@ -15,7 +17,12 @@ namespace Manualfac
              * the register extension method.
              */
 
-            throw new NotImplementedException();
+            if (func == null) throw new ArgumentNullException(nameof(func));
+
+            var service = new TypedService(typeof(T));
+            var activator = new DelegatedInstanceActivator(c => func(c));
+
+            return cb.RegisterComponent(new ComponentRegistration(service, activator));
 
             #endregion
         }
@@ -30,8 +37,11 @@ namespace Manualfac
              * implement RegisterType method.
              */
 
-            throw new NotImplementedException();
-            
+            var service = new TypedService(typeof(T));
+            var activator = new ReflectiveActivator(typeof(T));
+
+            return cb.RegisterComponent(new ComponentRegistration(service, activator));
+
             #endregion
         }
     }
