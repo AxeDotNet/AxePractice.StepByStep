@@ -16,22 +16,20 @@ namespace Manualfac.Sources
 
         public ComponentRegistration RegistrationFor(Service service)
         {
-            IServiceWithType swt = service as IServiceWithType;
-            if (swt == null) { return null; }
+            #region Please implement the method to pass the test
 
-            Type resolutionServiceType = swt.ServiceType;
-            if (!resolutionServiceType.IsConstructedGenericType) { return null; }
+            /*
+             * This source has 2 properties: the genericService is used as the key to match the
+             * service argument. And the implementorType is used to record the actual type used
+             * to create instances.
+             * 
+             * This method will try matching the constructed service to an non-constructed 
+             * generic type of genericService. If it is matched, then an concrete component
+             * registration needed wll be invoked.
+             */
+            throw new NotImplementedException();
 
-            Type genericDefinitionForResolutionType =
-                resolutionServiceType.GetGenericTypeDefinition();
-            if (!swt.ChangeType(genericDefinitionForResolutionType).Equals(genericService)) { return null; }
-
-            Type constructedImplementorGenericType = implementorType.MakeGenericType(
-                resolutionServiceType.GenericTypeArguments);
-
-            return new ComponentRegistration(
-                service,
-                new ReflectiveActivator(constructedImplementorGenericType));
+            #endregion
         }
     }
 }

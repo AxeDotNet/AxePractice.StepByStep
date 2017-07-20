@@ -31,18 +31,17 @@ namespace Manualfac
                 return true;
             }
 
-            ComponentRegistration sourcedRegistration = sources
-                .Select(s => s.RegistrationFor(service))
-                .FirstOrDefault(cr => cr != null);
-            if (sourcedRegistration != null)
-            {
-                Register(sourcedRegistration);
-                registration = serviceInfos[service];
-                return true;
-            }
+            #region Please implement the source query logic
 
-            registration = null;
-            return false;
+            /*
+             * The following code will go through the source list and find the first source who
+             * can match the service. If no-one can match, then query failed. The function will 
+             * return fasle. If we have found one. Then create a concrete component registration
+             * and add it to serviceInfos for speed acceleration.
+             */
+            throw new NotImplementedException();
+
+            #endregion
         }
     }
 }
