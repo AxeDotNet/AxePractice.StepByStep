@@ -1,33 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Manualfac
 {
     class Disposer : Disposable
     {
-        Stack<IDisposable> items = new Stack<IDisposable>();
+        #region Please implements the following methods
+
+        /*
+         * The disposer is used for disposing all disposable items added when it is disposed.
+         */
 
         public void AddItemsToDispose(object item)
         {
-            var disposable = item as IDisposable;
-            if (disposable == null) { return; }
-            items.Push(disposable);
+            throw new NotImplementedException();
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                while (items.Count > 0)
-                {
-                    IDisposable disposable = items.Pop();
-                    disposable.Dispose();
-                }
-
-                items = null;
-            }
-
-            base.Dispose(disposing);
+            throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

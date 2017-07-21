@@ -6,7 +6,7 @@ namespace Manualfac
     {
         readonly ComponentRegistry componentRegistry;
         readonly Disposer disposer = new Disposer();
-
+        
         public LifetimeScope(ComponentRegistry componentRegistry)
         {
             this.componentRegistry = componentRegistry;
@@ -14,17 +14,31 @@ namespace Manualfac
 
         public object ResolveComponent(Service service)
         {
-            if (IsDisposed) { throw new ObjectDisposedException("I am dead~."); }
+            #region Please modifies the following code to pass the test
+
+            /*
+             * The lifetime scope will track lifetime for instances created.
+             */
+
             if (service == null) { throw new ArgumentNullException(nameof(service)); }
             ComponentRegistration componentRegistration = GetComponentRegistration(service);
-            object instance = componentRegistration.Activator.Activate(this);
-            disposer.AddItemsToDispose(instance);
-            return instance;
+            return componentRegistration.Activator.Activate(this);
+
+            #endregion
         }
 
         public ILifetimeScope BeginLifetimeScope()
         {
-            return new LifetimeScope(componentRegistry);
+            #region Please modifies the following code to pass the test
+
+            /*
+             * Create a new lifetime scope. The created scope has no relationship except the
+             * component registry.
+             */
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         ComponentRegistration GetComponentRegistration(Service service)
