@@ -6,8 +6,6 @@ namespace Manualfac
 {
     public class ComponentRegistry
     {
-        readonly object syncObj = new object();
-
         readonly Dictionary<Service, ComponentRegistration> serviceInfos =
             new Dictionary<Service, ComponentRegistration>();
 
@@ -16,13 +14,7 @@ namespace Manualfac
         public void Register(ComponentRegistration registration)
         {
             if (registration == null) { throw new ArgumentNullException(nameof(registration)); }
-
-            lock (syncObj)
-            {
-                // Now we have put concurrent issues into consideration. Since sources can create
-                // registartions on-the-fly, so we need to protect the cached component registration.
-                serviceInfos[registration.Service] = registration;
-            }
+            serviceInfos[registration.Service] = registration;
         }
 
         public void RegisterSource(IRegistrationSource source)
@@ -33,13 +25,10 @@ namespace Manualfac
 
         public bool TryGetRegistration(Service service, out ComponentRegistration registration)
         {
-            lock (syncObj)
+            if (serviceInfos.ContainsKey(service))
             {
-                if (serviceInfos.ContainsKey(service))
-                {
-                    registration = serviceInfos[service];
-                    return true;
-                }
+                registration = serviceInfos[service];
+                return true;
             }
 
             ComponentRegistration sourceCreatedRegistration = sources
