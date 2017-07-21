@@ -27,10 +27,15 @@ namespace Manualfac
              * Since all the build operation can be considered as constructing the
              * ComponentRegistry. Please create a component registry and construct
              * its data. Then attach the registry to Container.
-             * 
+             *
              */
 
-            throw new NotImplementedException();
+            var componentRegistry = new ComponentRegistry();
+            callbacks.ForEach(c => c(componentRegistry));
+            var container = new Container(componentRegistry);
+
+            hasBeenBuilt = true;
+            return container;
 
             #endregion
         }
