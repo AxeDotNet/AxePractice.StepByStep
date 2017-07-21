@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Manualfac.Test
 {
-    public class OpenGenericRegistrationExtensionsTests
+    public class OpenGenericRegistrationExtensionsFacts
     {
         [SuppressMessage("ReSharper", "UnusedTypeParameter")]
         public interface IG<T>

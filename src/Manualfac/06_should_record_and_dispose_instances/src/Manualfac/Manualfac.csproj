@@ -36,7 +36,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activators\DelegatedInstanceActivator.cs" />
+    <Compile Include="Disposable.cs" />
+    <Compile Include="Disposer.cs" />
     <Compile Include="IInstanceActivator.cs" />
+    <Compile Include="ILifetimeScope.cs" />
+    <Compile Include="LifetimeScope.cs" />
     <Compile Include="Sources\OpenGenericRegistrationSource.cs" />
     <Compile Include="Activators\ReflectiveActivator.cs" />
     <Compile Include="OpenGenericRegisterExtensions.cs" />

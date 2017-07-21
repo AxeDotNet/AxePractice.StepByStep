@@ -47,7 +47,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OpenGenericRegistrationExtensionsTests.cs" />
+    <Compile Include="CommonFixtures\DisposeTracker.cs" />
+    <Compile Include="LifetimeScopeFacts.cs" />
+    <Compile Include="OpenGenericRegistrationExtensionsFacts.cs" />
     <Compile Include="ContainerBuilderFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistrationBuilderFacts.cs" />

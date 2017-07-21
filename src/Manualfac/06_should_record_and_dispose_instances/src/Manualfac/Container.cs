@@ -1,32 +1,32 @@
-﻿using System;
-
-namespace Manualfac
+﻿namespace Manualfac
 {
-    public class Container : IComponentContext
+    public class Container : Disposable, ILifetimeScope
     {
-        readonly ComponentRegistry componentRegistry;
+        readonly ILifetimeScope rootLifetimeScope;
 
         internal Container(ComponentRegistry componentRegistry)
         {
-            this.componentRegistry = componentRegistry;
+            rootLifetimeScope = new LifetimeScope(componentRegistry);
         }
 
-        public object ResolveComponent(Service service)
+        public object ResolveComponent(Service type)
         {
-            if (service == null) { throw new ArgumentNullException(nameof(service)); }
-            ComponentRegistration componentRegistration = GetComponentRegistration(service);
-            return componentRegistration.Activator.Activate(this);
+            return rootLifetimeScope.ResolveComponent(type);
         }
 
-        ComponentRegistration GetComponentRegistration(Service service)
+        public ILifetimeScope BeginLifetimeScope()
         {
-            ComponentRegistration registration;
-            if (!componentRegistry.TryGetRegistration(service, out registration))
+            return rootLifetimeScope.BeginLifetimeScope();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                throw new DependencyResolutionException($"Cannot find registration: {service}");
+                rootLifetimeScope.Dispose();
             }
 
-            return registration;
+            base.Dispose(disposing);
         }
     }
 }
