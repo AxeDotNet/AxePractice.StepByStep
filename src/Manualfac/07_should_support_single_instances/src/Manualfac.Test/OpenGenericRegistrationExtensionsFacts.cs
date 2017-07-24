@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Manualfac.Test.CommonFixtures;
 using Xunit;
 
 namespace Manualfac.Test
@@ -8,11 +9,11 @@ namespace Manualfac.Test
     public class OpenGenericRegistrationExtensionsFacts
     {
         [SuppressMessage("ReSharper", "UnusedTypeParameter")]
-        public interface IG<T>
+        interface IG<T>
         {
         }
 
-        public class G<T> : IG<T>
+        class G<T> : IG<T>
         {
         }
 
@@ -115,6 +116,48 @@ namespace Manualfac.Test
             cb.RegisterGeneric(typeof(List<>)).As(typeof(IList<>));
             Container container = cb.Build();
             Assert.Throws<DependencyResolutionException>(() => container.Resolve(typeof(IList<>)));
+        }
+
+        [Fact]
+        public void InstancePerLifetimeScopeAppliedToOpenGenerics()
+        {
+            var cb = new ContainerBuilder();
+            cb.RegisterGeneric(typeof(G<>)).As(typeof(IG<>)).InstancePerLifetimeScope();
+
+            Container container = cb.Build();
+            ILifetimeScope lifetimeScope = container.BeginLifetimeScope();
+
+            var gint1 = lifetimeScope.Resolve<IG<int>>();
+            var gint2 = lifetimeScope.Resolve<IG<int>>();
+
+            ILifetimeScope anotherLifetimescope = container.BeginLifetimeScope();
+
+            var gint1inAnother = anotherLifetimescope.Resolve<IG<int>>();
+            var gint2inAnother = anotherLifetimescope.Resolve<IG<int>>();
+
+            Assert.Same(gint1, gint2);
+            Assert.Same(gint1inAnother, gint2inAnother);
+            Assert.NotSame(gint1, gint1inAnother);
+        }
+        
+        [Fact]
+        public void SingleInstanceAppliedToOpenGenerics()
+        {
+            var cb = new ContainerBuilder();
+            cb.RegisterGeneric(typeof(G<>)).As(typeof(IG<>)).SingleInstance();
+
+            Container container = cb.Build();
+            ILifetimeScope scope = container.BeginLifetimeScope();
+
+            var gint1 = scope.Resolve<IG<int>>();
+            var gint2 = scope.Resolve<IG<int>>();
+
+            ILifetimeScope scope_1 = scope.BeginLifetimeScope();
+
+            var gint3 = scope_1.Resolve<IG<int>>();
+
+            Assert.Same(gint1, gint2);
+            Assert.Same(gint1, gint3);
         }
     }
 }
