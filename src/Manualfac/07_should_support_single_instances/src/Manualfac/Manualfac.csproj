@@ -44,6 +44,7 @@
     <Compile Include="ILifetimeScope.cs" />
     <Compile Include="InstanceSharing.cs" />
     <Compile Include="LifetimeScope.cs" />
+    <Compile Include="RootScopeLifetime.cs" />
     <Compile Include="Sources\OpenGenericRegistrationSource.cs" />
     <Compile Include="Activators\ReflectiveActivator.cs" />
     <Compile Include="OpenGenericRegisterExtensions.cs" />

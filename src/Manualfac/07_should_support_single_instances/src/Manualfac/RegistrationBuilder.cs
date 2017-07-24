@@ -35,9 +35,15 @@ namespace Manualfac
 
         public IRegistrationBuilder SingleInstance()
         {
-            Lifetime = new RootScopeLifetime();
-            Sharing = InstanceSharing.Shared;
-            return this;
+            #region Please implement the method
+
+            /*
+             * Please create a single instance registration. Please refer to
+             * InstancePerDependency as an example.
+             */
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public IRegistrationBuilder InstancePerDependency()
@@ -49,9 +55,15 @@ namespace Manualfac
 
         public IRegistrationBuilder InstancePerLifetimeScope()
         {
-            Lifetime = new CurrentScopeLifetime();
-            Sharing = InstanceSharing.Shared;
-            return this;
+            #region Please implement the method
+
+            /*
+             * Please create an instance per lifetime scope registration. Please refer to
+             * InstancePerDependency as an example.
+             */
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public void RequireInitialized()

@@ -6,6 +6,8 @@ namespace Manualfac
     public class LifetimeScope : Disposable, ILifetimeScope
     {
         readonly ComponentRegistry componentRegistry;
+
+        // The shared instaces dicationary caches the reusable resolved instances.
         readonly Dictionary<Service, object> sharedInstances = new Dictionary<Service, object>();
         public Disposer Disposer { get; } = new Disposer();
         public ILifetimeScope RootScope { get; }
@@ -15,12 +17,17 @@ namespace Manualfac
         {
         }
 
-        public LifetimeScope(ComponentRegistry componentRegistry, ILifetimeScope scope)
+        public LifetimeScope(ComponentRegistry componentRegistry, ILifetimeScope parent)
         {
             if (componentRegistry == null) { throw new ArgumentNullException(nameof(componentRegistry));}
 
             this.componentRegistry = componentRegistry;
-            RootScope = scope ?? this;
+
+            #region Please initialize root scope
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public object ResolveComponent(Service service)
@@ -36,40 +43,50 @@ namespace Manualfac
 
         public object GetCreateShare(ComponentRegistration registration)
         {
-            if (registration.Sharing == InstanceSharing.Shared)
-            {
-                object existed;
-                if (sharedInstances.TryGetValue(registration.Service, out existed))
-                {
-                    return existed;
-                }
-            }
-            
-            object instance = registration.Activator.Activate(this);
-            Disposer.AddItemsToDispose(instance);
+            /*
+             * There is a missing concept in lifetime scope is instance storge. Currently, part of this
+             * function is provided by ResolveComponent method. But Resolving is not equivalent with 
+             * storage. Resolving means that it will not only creat the instance, but store it to 
+             * correct lifetime scope (may be current one, and may be not) as well. And this is why
+             * we extract the method.
+             * 
+             * This method will create, track and cache(if needed) instance in current lifetime scope.
+             * Simple enough huh? The Sharing property will help you to determine whether the activated
+             * instace be shared.
+             */
 
-            if (registration.Sharing == InstanceSharing.Shared)
-            {
-                sharedInstances.Add(registration.Service, instance);
-            }
+            #region Please implement this method
 
-            return instance;
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public ILifetimeScope BeginLifetimeScope()
         {
-            return new LifetimeScope(componentRegistry, RootScope);
+            #region Please implement the method
+
+            /*
+             * Create a child life-time scope in this method.
+             */
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         ComponentRegistration GetComponentRegistration(Service service)
         {
-            ComponentRegistration registration;
-            if (!componentRegistry.TryGetRegistration(service, out registration))
-            {
-                throw new DependencyResolutionException($"Cannot find registration: {service}");
-            }
+            #region Please implement the method
 
-            return registration;
+            /*
+             * This method will try get component registration from component registry.
+             * We extract this method for isolation of responsibility.
+             */
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         protected override void Dispose(bool disposing)
