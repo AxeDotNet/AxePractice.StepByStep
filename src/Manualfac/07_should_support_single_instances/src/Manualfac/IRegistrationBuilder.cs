@@ -12,6 +12,7 @@ namespace Manualfac
         IRegistrationBuilder Named<TService>(string name);
         IRegistrationBuilder Named(string name, Type type);
         IRegistrationBuilder SingleInstance();
+        IRegistrationBuilder InstancePerLifetimeScope();
         void RequireInitialized();
     }
 }

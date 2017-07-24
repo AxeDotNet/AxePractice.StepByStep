@@ -302,23 +302,5 @@ namespace Manualfac.Test
             builder.Register(c => "hello").As<IA>();
             Assert.Throws<ArgumentException>(() => builder.Build());
         }
-
-        [Fact]
-        public void WithInternalSingleton()
-        {
-            var cb = new ContainerBuilder();
-            cb.RegisterType<Abc>()
-                .As<IA>()
-                .SingleInstance();
-            var c = cb.Build();
-            var a1 = c.Resolve<IA>();
-            var a2 = c.Resolve<IA>();
-            c.Dispose();
-
-            Assert.NotNull(a1);
-            Assert.Same(a1, a2);
-            Assert.True(((Abc)a1).IsDisposed);
-            Assert.True(((Abc)a2).IsDisposed);
-        }
     }
 }

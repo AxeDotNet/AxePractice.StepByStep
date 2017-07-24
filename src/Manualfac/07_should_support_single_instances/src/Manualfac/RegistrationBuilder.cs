@@ -36,7 +36,7 @@ namespace Manualfac
         public IRegistrationBuilder SingleInstance()
         {
             Lifetime = new RootScopeLifetime();
-            Sharing = InstanceSharing.Shared;;
+            Sharing = InstanceSharing.Shared;
             return this;
         }
 
@@ -44,6 +44,13 @@ namespace Manualfac
         {
             Lifetime = new CurrentScopeLifetime();
             Sharing = InstanceSharing.None;
+            return this;
+        }
+
+        public IRegistrationBuilder InstancePerLifetimeScope()
+        {
+            Lifetime = new CurrentScopeLifetime();
+            Sharing = InstanceSharing.Shared;
             return this;
         }
 
