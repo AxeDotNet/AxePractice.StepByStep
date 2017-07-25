@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Manualfac
 {
     class Disposer : Disposable
     {
+        readonly IList<object> disposes = new List<object>();
+
         #region Please implements the following methods
 
         /*
@@ -12,12 +16,15 @@ namespace Manualfac
 
         public void AddItemsToDispose(object item)
         {
-            throw new NotImplementedException();
+            disposes.Add(item);
         }
 
         protected override void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            if (disposing)
+            {
+                disposes.OfType<IDisposable>().ToList().ForEach(o => o.Dispose());
+            }
         }
 
         #endregion
