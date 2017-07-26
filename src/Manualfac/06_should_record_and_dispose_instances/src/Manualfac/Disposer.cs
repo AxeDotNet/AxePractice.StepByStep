@@ -8,16 +8,17 @@ namespace Manualfac
     {
         #region Please implements the following methods
 
-        readonly Stack<IDisposable> disposes = new Stack<IDisposable>();
+        Stack<IDisposable> disposes = new Stack<IDisposable>();
         /*
          * The disposer is used for disposing all disposable items added when it is disposed.
          */
 
         public void AddItemsToDispose(object item)
         {
-            if (item is IDisposable)
+            var disposable = item as IDisposable;
+            if (disposable != null)
             {
-                disposes.Push((IDisposable)item);
+                disposes.Push(disposable);
             }
         }
 
@@ -29,6 +30,8 @@ namespace Manualfac
                 {
                     disposes.Pop().Dispose();
                 }
+
+                disposes = null;
             }
 
             base.Dispose(disposing);
