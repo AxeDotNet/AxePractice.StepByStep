@@ -72,7 +72,9 @@ namespace Manualfac.Test
             var builder = new ContainerBuilder();
             builder.RegisterType<DisposeTracker>().SingleInstance();
             Container parent = builder.Build();
-            ILifetimeScope scope = parent.BeginLifetimeScope();
+            ILifetimeScope scope = parent
+                .BeginLifetimeScope()
+                .BeginLifetimeScope();
 
             var dt = scope.Resolve<DisposeTracker>();
 
