@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace Manualfac
 {
+    // The lifetime scope class is the main battle field for concurrent accessing.
+    // So please protect its content in a lock scope. Since the componentRegistry,
+    // which should be protected separately, is shared accross lifetime scopes, so
+    // the resources we should protect are the sharedInstances dictionary and
+    // the disposer.
     public class LifetimeScope : Disposable, ILifetimeScope
     {
         readonly ComponentRegistry componentRegistry;
@@ -41,13 +46,10 @@ namespace Manualfac
         {
             if (registration.Sharing == InstanceSharing.Shared)
             {
-                lock (syncObj)
+                object component;
+                if (sharedInstances.TryGetValue(registration.Service, out component))
                 {
-                    object component;
-                    if (sharedInstances.TryGetValue(registration.Service, out component))
-                    {
-                        return component;
-                    }
+                    return component;
                 }
             }
 
@@ -56,10 +58,7 @@ namespace Manualfac
 
             if (registration.Sharing == InstanceSharing.Shared)
             {
-                lock (syncObj)
-                {
-                    sharedInstances.Add(registration.Service, instance);
-                }
+                sharedInstances.Add(registration.Service, instance);
             }
 
             return instance;

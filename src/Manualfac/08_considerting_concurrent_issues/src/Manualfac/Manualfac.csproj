@@ -66,6 +66,8 @@
     <Compile Include="Services\TypedNameService.cs" />
     <Compile Include="Services\TypedService.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Relationship.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

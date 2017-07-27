@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace Manualfac
 {
+    // TODO: Please protect shared resources form racing condition in this class
+    // We have to ensure that the IoC is thread safe after build. So, for component
+    // registry, the serviceInfos accessing should be thread safe. (The sources can
+    // only be written in registration stage, which is before building the container)
     public class ComponentRegistry
     {
         readonly object syncObj = new object();
@@ -15,11 +19,7 @@ namespace Manualfac
         public void Register(ComponentRegistration registration)
         {
             if (registration == null) { throw new ArgumentNullException(nameof(registration)); }
-
-            lock (syncObj)
-            {
-                serviceInfos[registration.Service] = registration;
-            }
+            serviceInfos[registration.Service] = registration;
         }
 
         public void RegisterSource(IRegistrationSource source)
@@ -30,13 +30,10 @@ namespace Manualfac
 
         public bool TryGetRegistration(Service service, out ComponentRegistration registration)
         {
-            lock (syncObj)
+            if (serviceInfos.ContainsKey(service))
             {
-                if (serviceInfos.ContainsKey(service))
-                {
-                    registration = serviceInfos[service];
-                    return true;
-                }
+                registration = serviceInfos[service];
+                return true;
             }
 
             ComponentRegistration sourceCreatedRegistration = sources

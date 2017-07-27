@@ -1,8 +1,11 @@
 ﻿using System;
-using System.Threading;
 
 namespace Manualfac
 {
+    // Since it is critical to get concrete value of whether the instance has been disposed.
+    // We should make sure that the value should always be the latest while read from any
+    // CPU core.
+    // TODO: Ensure get latest value of IsDisposed.
     public class Disposable : IDisposable
     {
         const int HaveBeenDisposed = 1;
@@ -10,10 +13,11 @@ namespace Manualfac
 
         public void Dispose()
         {
-            if (HaveBeenDisposed == Interlocked.Exchange(ref disposedStatus, HaveBeenDisposed))
+            if (disposedStatus == HaveBeenDisposed)
             {
                 return;
             }
+            disposedStatus = HaveBeenDisposed;
 
             Dispose(true);
             GC.SuppressFinalize(this);
@@ -23,13 +27,6 @@ namespace Manualfac
         {
         }
 
-        protected bool IsDisposed
-        {
-            get
-            {
-                Interlocked.MemoryBarrier();
-                return disposedStatus == HaveBeenDisposed;
-            }
-        }
+        protected bool IsDisposed => disposedStatus == HaveBeenDisposed;
     }
 }
