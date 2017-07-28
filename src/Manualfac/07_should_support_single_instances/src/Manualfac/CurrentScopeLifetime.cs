@@ -13,6 +13,7 @@ namespace Manualfac
              * within current lifetime scope.
              */
 
+            if (mostNestedLifetimeScope == null) throw new ArgumentNullException(nameof(mostNestedLifetimeScope));
             return mostNestedLifetimeScope;
 
             #endregion

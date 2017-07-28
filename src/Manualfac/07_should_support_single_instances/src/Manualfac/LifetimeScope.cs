@@ -57,19 +57,21 @@ namespace Manualfac
 
             #region Please implement this method
 
+            object resolved;
 
             if (registration.Sharing == InstanceSharing.Shared)
             {
                 if (!sharedInstances.ContainsKey(registration.Service))
                 {
-                    sharedInstances[registration.Service] = registration.Activator.Activate(this);
+                    resolved = registration.Activator.Activate(this);
+                    sharedInstances[registration.Service] = resolved;
+                    Disposer.AddItemsToDispose(resolved);
                 }
-                var sharedInstance = sharedInstances[registration.Service];
-                Disposer.AddItemsToDispose(sharedInstance);
-                return sharedInstance;
+
+                return sharedInstances[registration.Service];
             }
 
-            var resolved = registration.Activator.Activate(this);
+            resolved = registration.Activator.Activate(this);
             Disposer.AddItemsToDispose(resolved);
 
             return resolved;
