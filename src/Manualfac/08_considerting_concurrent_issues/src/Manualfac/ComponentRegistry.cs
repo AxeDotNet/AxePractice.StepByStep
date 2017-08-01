@@ -19,7 +19,10 @@ namespace Manualfac
         public void Register(ComponentRegistration registration)
         {
             if (registration == null) { throw new ArgumentNullException(nameof(registration)); }
-            serviceInfos[registration.Service] = registration;
+            lock (syncObj)
+            {
+                serviceInfos[registration.Service] = registration;
+            }
         }
 
         public void RegisterSource(IRegistrationSource source)
@@ -30,10 +33,13 @@ namespace Manualfac
 
         public bool TryGetRegistration(Service service, out ComponentRegistration registration)
         {
-            if (serviceInfos.ContainsKey(service))
+            lock (syncObj)
             {
-                registration = serviceInfos[service];
-                return true;
+                if (serviceInfos.ContainsKey(service))
+                {
+                    registration = serviceInfos[service];
+                    return true;
+                }
             }
 
             ComponentRegistration sourceCreatedRegistration = sources

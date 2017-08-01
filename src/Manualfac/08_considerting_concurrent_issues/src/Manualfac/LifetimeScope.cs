@@ -46,10 +46,13 @@ namespace Manualfac
         {
             if (registration.Sharing == InstanceSharing.Shared)
             {
-                object component;
-                if (sharedInstances.TryGetValue(registration.Service, out component))
+                lock (syncObj)
                 {
-                    return component;
+                    object component;
+                    if (sharedInstances.TryGetValue(registration.Service, out component))
+                    {
+                        return component;
+                    }
                 }
             }
 
@@ -58,7 +61,10 @@ namespace Manualfac
 
             if (registration.Sharing == InstanceSharing.Shared)
             {
-                sharedInstances.Add(registration.Service, instance);
+                lock (syncObj)
+                {
+                    sharedInstances.Add(registration.Service, instance);
+                }
             }
 
             return instance;
