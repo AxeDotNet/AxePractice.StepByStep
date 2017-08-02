@@ -5,7 +5,7 @@ using LocalApi.Routing;
 
 namespace LocalApi
 {
-    public class HttpConfiguration
+    public class HttpConfiguration : IDisposable
     {
         public HttpConfiguration(IEnumerable<Assembly> assemblies)
         {
@@ -25,6 +25,16 @@ namespace LocalApi
             {
                 DependencyResolver = new DefaultDependencyResolver(CachedControllerTypes);
             }
+        }
+
+        bool isDisposed;
+        public void Dispose()
+        {
+            if (isDisposed) { return; }
+            DependencyResolver?.Dispose();
+            isDisposed = true;
+
+            GC.SuppressFinalize(this);
         }
     }
 }

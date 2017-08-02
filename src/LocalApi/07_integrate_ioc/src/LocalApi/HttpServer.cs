@@ -10,14 +10,15 @@ namespace LocalApi
     public class HttpServer : HttpMessageHandler
     {
         readonly HttpConfiguration configuration;
-        
+
         public HttpServer(HttpConfiguration configuration)
         {
             this.configuration = configuration;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(
-            HttpRequestMessage request, CancellationToken cancellationToken)
+            HttpRequestMessage request,
+            CancellationToken cancellationToken)
         {
             HttpRoute matchedRoute = configuration.Routes.GetRouteData(request);
             if (matchedRoute == null)
@@ -43,6 +44,16 @@ namespace LocalApi
             }
 
             #endregion
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                configuration.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 }
