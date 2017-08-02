@@ -7,27 +7,34 @@ namespace LocalApi
     {
         public HttpConfiguration Configuration { get; }
         public HttpRoute MatchedRoute { get; }
-        IDependencyScope cachedScope;
-
+        
         public HttpRequestContext(HttpConfiguration configuration, HttpRoute matchedRoute)
         {
             Configuration = configuration;
             MatchedRoute = matchedRoute;
         }
 
+        #region Please implement the following method
+
+        /*
+         * For each http context, at most one dependency scope will be created. In
+         * this method, you should create and cache dependency scope.
+         * 
+         * Since the dependency scope manages all the object lifetimes. So we have
+         * to dispose it when request context finished.
+         * 
+         * You can create non-public fields if needed.
+         */
         public IDependencyScope GetDependencyScope()
         {
-            if (cachedScope == null)
-            {
-                cachedScope = Configuration.DependencyResolver.BeginScope();
-            }
-
-            return cachedScope;
+            throw new NotImplementedException();
         }
 
         public void Dispose()
         {
-            cachedScope?.Dispose();
+            throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

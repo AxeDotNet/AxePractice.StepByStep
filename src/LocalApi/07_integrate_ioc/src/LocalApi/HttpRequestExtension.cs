@@ -27,7 +27,15 @@ namespace LocalApi
 
         public static void DisposeRequestContext(this HttpRequestMessage request)
         {
-            request.GetRequestContext()?.Dispose();
+            #region Please implement the following methods
+
+            /*
+             * Please implement the method to dispose request context if there is any.
+             */
+
+            throw new NotImplementedException();
+
+            #endregion
         }
     }
 }

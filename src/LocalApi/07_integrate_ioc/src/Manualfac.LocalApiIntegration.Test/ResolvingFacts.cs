@@ -4,6 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
+using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using LocalApi;
@@ -15,11 +17,15 @@ namespace Manualfac.LocalApiIntegration.Test
 {
     public class ResolvingFacts
     {
+        readonly Assembly controllerAssembly = typeof(ControllerWithParameterizedCtor).Assembly;
+
         [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
         class DisposeTracker : IDisposable
         {
             static int nextId;
             readonly int id;
+
+            public bool IsDisposed { get; private set; }
 
             public DisposeTracker()
             {
@@ -33,14 +39,20 @@ namespace Manualfac.LocalApiIntegration.Test
 
             public void Dispose()
             {
+                IsDisposed = true;
             }
+        }
+
+        HttpConfiguration CreateHttpConfig()
+        {
+            return new HttpConfiguration(
+                new [] {controllerAssembly});
         }
 
         [Fact]
         public async Task should_create_parameterized_controller()
         {
-            var config = new HttpConfiguration(
-                new [] {typeof(ControllerWithParameterizedCtor).Assembly});
+            var config = CreateHttpConfig();
             config.Routes.Add(new HttpRoute(
                 "ControllerWithParameterizedCtor",
                 "Get",
@@ -68,8 +80,7 @@ namespace Manualfac.LocalApiIntegration.Test
         [Fact]
         public async Task should_correctly_specify_per_request_scope()
         {
-            var config = new HttpConfiguration(
-                new[] { typeof(ControllerWithParameterizedCtor).Assembly });
+            var config = CreateHttpConfig();
             config.Routes.Add(new HttpRoute(
                 "ControllerWithParameterizedCtor",
                 "CheckEqual",
@@ -97,8 +108,7 @@ namespace Manualfac.LocalApiIntegration.Test
         [Fact]
         public async Task should_correctly_specify_singleinstance()
         {
-            var config = new HttpConfiguration(
-                new[] { typeof(ControllerWithParameterizedCtor).Assembly });
+            var config = CreateHttpConfig();
             config.Routes.Add(new HttpRoute(
                 "ControllerWithOneDependency",
                 "PrintInstanceInfo",
@@ -127,6 +137,36 @@ namespace Manualfac.LocalApiIntegration.Test
                 }
 
                 Assert.Equal(1, contents.Distinct(StringComparer.Ordinal).Count());
+            }
+        }
+
+        [Fact]
+        public async Task should_correctly_dispose_scope()
+        {
+            var config = CreateHttpConfig();
+            config.Routes.Add(new HttpRoute(
+                "ControllerWithParameterizedCtor",
+                "CheckEqual",
+                HttpMethod.Get,
+                "resource"));
+
+            var cb = new ContainerBuilder();
+            cb.RegisterType<ControllerWithParameterizedCtor>();
+            var singleDisposable = new DisposeTracker();
+            cb.Register(_ => singleDisposable).As<IDisposable>();
+
+            config.DependencyResolver = new ManualfacDependencyResolver(cb.Build());
+
+            config.EnsureInitialized();
+            var server = new HttpServer(config);
+
+            using (server)
+            using (var client = new HttpClient(server))
+            {
+                HttpResponseMessage response = await client.GetAsync(
+                    "http://www.base.com/resource");
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                Assert.True(singleDisposable.IsDisposed);
             }
         }
     }

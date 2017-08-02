@@ -5,27 +5,35 @@ namespace Manualfac.LocalApiIntegration
 {
     public class ManualfacDependencyResolver : IDependencyResolver
     {
-        readonly Container rootScope;
+        #region Please implement the following class
+
+        /*
+         * We should create a manualfac dependency resolver so that we can integrate it
+         * to LocalApi.
+         * 
+         * You can add a public/internal constructor and non-public fields if needed.
+         */
 
         public ManualfacDependencyResolver(Container rootScope)
         {
-            this.rootScope = rootScope;
+            throw new NotImplementedException();
         }
 
         public void Dispose()
         {
-            rootScope.Dispose();
+            throw new NotImplementedException();
         }
 
         public object GetService(Type type)
         {
-            rootScope.TryResolve(type, out object resolved);
-            return resolved;
+            throw new NotImplementedException();
         }
 
         public IDependencyScope BeginScope()
         {
-            return new ManualfacDependencyScope(rootScope.BeginLifetimeScope());
+            throw new NotImplementedException();
         }
+
+        #endregion
     }
 }
