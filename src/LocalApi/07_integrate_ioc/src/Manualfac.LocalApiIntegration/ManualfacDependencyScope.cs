@@ -5,22 +5,24 @@ namespace Manualfac.LocalApiIntegration
 {
     class ManualfacDependencyScope : IDependencyScope
     {
-        readonly ILifetimeScope scope;
+        #region Please implement the class
 
-        public ManualfacDependencyScope(ILifetimeScope scope)
-        {
-            this.scope = scope;
-        }
-
+        /*
+         * We should create a manualfac dependency scope so that we can integrate it
+         * to LocalApi.
+         * 
+         * You can add a public/internal constructor and non-public fields if needed.
+         */
         public void Dispose()
         {
-            scope.Dispose();
+            throw new NotImplementedException();
         }
 
         public object GetService(Type type)
         {
-            scope.TryResolve(type, out object resolved);
-            return resolved;
+            throw new NotImplementedException();
         }
+
+        #endregion
     }
 }
