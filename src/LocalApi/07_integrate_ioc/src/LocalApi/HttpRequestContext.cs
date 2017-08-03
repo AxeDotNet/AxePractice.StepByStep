@@ -5,6 +5,7 @@ namespace LocalApi
 {
     class HttpRequestContext : IDisposable
     {
+        IDependencyScope scope;
         public HttpConfiguration Configuration { get; }
         public HttpRoute MatchedRoute { get; }
         
@@ -27,12 +28,12 @@ namespace LocalApi
          */
         public IDependencyScope GetDependencyScope()
         {
-            throw new NotImplementedException();
+            return scope ?? (scope = Configuration.DependencyResolver.BeginScope());
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            scope?.Dispose();
         }
 
         #endregion

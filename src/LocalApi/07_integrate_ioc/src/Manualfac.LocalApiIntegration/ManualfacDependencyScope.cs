@@ -5,6 +5,13 @@ namespace Manualfac.LocalApiIntegration
 {
     class ManualfacDependencyScope : IDependencyScope
     {
+        ILifetimeScope scope;
+
+        public ManualfacDependencyScope(ILifetimeScope scope)
+        {
+            this.scope = scope;
+        }
+
         #region Please implement the class
 
         /*
@@ -15,12 +22,14 @@ namespace Manualfac.LocalApiIntegration
          */
         public void Dispose()
         {
-            throw new NotImplementedException();
+            scope?.Dispose();
         }
 
         public object GetService(Type type)
         {
-            throw new NotImplementedException();
+            object instance;
+            scope.TryResolve(type, out instance);
+            return instance;
         }
 
         #endregion
