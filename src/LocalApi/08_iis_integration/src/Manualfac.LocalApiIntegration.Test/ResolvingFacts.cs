@@ -18,7 +18,9 @@ namespace Manualfac.LocalApiIntegration.Test
     {
         readonly Assembly controllerAssembly = typeof(ControllerWithParameterizedCtor).Assembly;
 
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
         [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Local")]
         class DisposeTracker : IDisposable
         {
             static int nextId;
@@ -136,36 +138,6 @@ namespace Manualfac.LocalApiIntegration.Test
                 }
 
                 Assert.Equal(1, contents.Distinct(StringComparer.Ordinal).Count());
-            }
-        }
-
-        [Fact]
-        public async Task should_correctly_dispose_scope()
-        {
-            var config = CreateHttpConfig();
-            config.Routes.Add(new HttpRoute(
-                "ControllerWithParameterizedCtor",
-                "CheckEqual",
-                HttpMethod.Get,
-                "resource"));
-
-            var cb = new ContainerBuilder();
-            cb.RegisterType<ControllerWithParameterizedCtor>();
-            var singleDisposable = new DisposeTracker();
-            cb.Register(_ => singleDisposable).As<IDisposable>();
-
-            config.DependencyResolver = new ManualfacDependencyResolver(cb.Build());
-
-            config.EnsureInitialized();
-            var server = new HttpServer(config);
-
-            using (server)
-            using (var client = new HttpClient(server))
-            {
-                HttpResponseMessage response = await client.GetAsync(
-                    "http://www.base.com/resource");
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                Assert.True(singleDisposable.IsDisposed);
             }
         }
     }

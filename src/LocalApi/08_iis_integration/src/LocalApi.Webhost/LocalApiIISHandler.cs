@@ -9,8 +9,11 @@ namespace LocalApi.Webhost
 {
     public class LocalApiIISHandler : HttpTaskAsyncHandler
     {
+        #region Initialize http server here
         static readonly Lazy<HttpServer> server = new Lazy<HttpServer>(
-            () => new HttpServer(GlobalConfiguration.Configuration), true);
+            () => new HttpServer(GlobalConfiguration.Configuration),
+            true);
+        #endregion
 
         public override Task ProcessRequestAsync(HttpContext context)
         {
@@ -24,7 +27,11 @@ namespace LocalApi.Webhost
             try
             {
                 CancellationToken cancellationToken = CancellationToken.None;
-                response = await server.Value.Process(request, cancellationToken);
+                #region Please integrate LocalAPI with this handler
+
+                // Please generate response here.
+
+                #endregion
                 await AspnetContextConverter.CopyResponseAsync(
                     contextBase, 
                     response,
