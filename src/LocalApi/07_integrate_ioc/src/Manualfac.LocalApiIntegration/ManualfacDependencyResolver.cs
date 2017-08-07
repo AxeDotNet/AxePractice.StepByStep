@@ -5,14 +5,13 @@ namespace Manualfac.LocalApiIntegration
 {
     public class ManualfacDependencyResolver : IDependencyResolver
     {
-        Container rootScope;
-
         #region Please implement the following class
 
+        Container rootScope;
         /*
          * We should create a manualfac dependency resolver so that we can integrate it
          * to LocalApi.
-         *
+         * 
          * You can add a public/internal constructor and non-public fields if needed.
          */
 

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="sharedInstances and Disposer is writable shared resources. So they need to be sync protected.">
+    <Position X="1.271" Y="4.708" Height="0.99" Width="1.7" />
+  </Comment>
+  <Comment CommentText="ComponentRegistry is shared across multiple LifetimeScope. So it needs to be sync protected separately.">
+    <Position X="8" Y="1.531" Height="0.99" Width="1.7" />
+  </Comment>
+  <Class Name="Manualfac.LifetimeScope">
+    <Position X="4.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAIAAAAHAAAAAAABAAAAQAAAAAAAAAAAEAAABAAAI=</HashCode>
+      <FileName>LifetimeScope.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="componentRegistry" />
+      <Property Name="Disposer" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="sharedInstances" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Manualfac.ComponentRegistry" HideInheritanceLine="true">
+    <Position X="8" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAEAABRAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ComponentRegistry.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="serviceInfos" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="1.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Manualfac.Disposer" Collapsed="true">
+    <Position X="1.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAQAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Disposer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Manualfac.ComponentRegistration" Collapsed="true" HideInheritanceLine="true">
+    <Position X="8" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAQIAAAEAAAAAAAAA=</HashCode>
+      <FileName>ComponentRegistration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Manualfac.Container" Collapsed="true">
+    <Position X="1.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAIAAAACAAAAAAABAAAAAAAAAAAAAAAAMAAAAAAAI=</HashCode>
+      <FileName>Container.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="rootLifetimeScope" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Manualfac.ILifetimeScope" Collapsed="true">
+    <Position X="4.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAI=</HashCode>
+      <FileName>ILifetimeScope.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
