@@ -53,7 +53,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DeserializeContentFacts.cs" />
+    <Compile Include="ClientHelper.cs" />
+    <Compile Include="ContentDeserializingFacts.cs" />
+    <Compile Include="ContentNegotiationFacts.cs" />
+    <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
