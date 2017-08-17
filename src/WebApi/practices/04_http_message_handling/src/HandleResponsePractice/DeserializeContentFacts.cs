@@ -8,7 +8,7 @@ using Xunit;
 
 namespace HandleResponsePractice
 {
-    public class DeserializeContentFacts
+    public class ContentNegotiationFacts
     {
         static readonly HttpClient client = new HttpClient
         {
