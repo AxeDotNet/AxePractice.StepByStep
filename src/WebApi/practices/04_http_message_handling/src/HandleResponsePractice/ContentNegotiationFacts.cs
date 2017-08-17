@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -8,13 +7,8 @@ using Xunit;
 
 namespace HandleResponsePractice
 {
-    public class DeserializeContentFacts
+    public class ContentNegotiationFacts
     {
-        static readonly HttpClient client = new HttpClient
-        {
-            BaseAddress = new Uri("http://localhost:44444")
-        };
-
         [Theory]
         [InlineData("application/xml", "xml")]
         [InlineData("application/json", "json")]
@@ -24,7 +18,7 @@ namespace HandleResponsePractice
             var request = new HttpRequestMessage(HttpMethod.Get, "message");
             request.Headers.Accept.Clear();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(accept));
-            HttpResponseMessage response = await client.SendAsync(request);
+            HttpResponseMessage response = await ClientHelper.Client.SendAsync(request);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Contains(expected, response.Content.Headers.ContentType.MediaType);
         }
@@ -35,7 +29,7 @@ namespace HandleResponsePractice
             var request = new HttpRequestMessage(HttpMethod.Get, "message");
             request.Headers.Accept.Clear();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpResponseMessage response = await client.SendAsync(request);
+            HttpResponseMessage response = await ClientHelper.Client.SendAsync(request);
             string content = await response.Content.ReadAsStringAsync();
             var json = JsonConvert.DeserializeAnonymousType(content, new {message = default(string)});
             Assert.Equal("Hello", json.message);
