@@ -63,6 +63,12 @@ namespace SampleWebApi
                 new { controller = "Resource", action = "GetLinkWithDefaultRestriction" },
                 new { httpMethod = new HttpMethodConstraint(HttpMethod.Get) });
             config.Routes.MapHttpRoute(
+                "resource returns dynamic",
+                "user/{userId}/resource/dynamic",
+                new { controller = "Resource", action = "GetReturnsDynamic" },
+                new { httpMethod = new HttpMethodConstraint(HttpMethod.Get) });
+
+            config.Routes.MapHttpRoute(
                 "resource",
                 "user/{userId}/resource/{type}",
                 new {controller = "Resource", action = "Get"},

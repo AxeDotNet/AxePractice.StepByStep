@@ -118,6 +118,26 @@ namespace HandleResponsePractice
                     Links = default(LinkItemDto[])
                 });
 
+            Assert.Equal(1, dto.Links.Length);
+            Assert.True(dto.Links.All(item => !item.Restricted));
+        }
+
+        [Fact]
+        public async Task should_get_non_restricted_resource_information_for_api_returns_dynamic()
+        {
+            HttpResponseMessage response = await ClientHelper.Client.GetAsync(
+                "user/1/resource/dynamic");
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            string content = await response.Content.ReadAsStringAsync();
+            var dto = JsonConvert.DeserializeAnonymousType(
+                content,
+                new
+                {
+                    Links = default(LinkItemDto[])
+                });
+
+            Assert.Equal(1, dto.Links.Length);
             Assert.True(dto.Links.All(item => !item.Restricted));
         }
 

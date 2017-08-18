@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Dynamic;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using SampleWebApi.ContractDtos;
@@ -22,6 +23,21 @@ namespace SampleWebApi
                         new LinkItemDto("details", "get-link", false)
                     }
                 });
+        }
+
+        [RestrictedUac("userId")]
+        public dynamic GetReturnsDynamic(long userId)
+        {
+            dynamic dto = new ExpandoObject();
+            dto.Type = "Dynamic";
+            dto.Links = new[]
+            {
+                new LinkItemDto("edit", "edit-link", true),
+                new LinkItemDto("create", "create-link", true),
+                new LinkItemDto("details", "get-link", false)
+            };
+
+            return dto;
         }
 
         [RestrictedUac("userId")]
