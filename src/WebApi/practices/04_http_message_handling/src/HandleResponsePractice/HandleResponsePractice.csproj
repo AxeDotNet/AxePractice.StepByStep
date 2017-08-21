@@ -54,8 +54,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientHelper.cs" />
+    <Compile Include="Common\TypeExtensions.cs" />
     <Compile Include="ContentDeserializingFacts.cs" />
     <Compile Include="ContentNegotiationFacts.cs" />
+    <Compile Include="ContentUpdatingFacts.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
