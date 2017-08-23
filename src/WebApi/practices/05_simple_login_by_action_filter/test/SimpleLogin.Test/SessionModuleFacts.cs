@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Autofac;
+using Axe.SimpleHttpMock;
 using Moq;
 using Newtonsoft.Json;
 using SessionModule;
@@ -19,7 +20,7 @@ namespace SimpleLogin.Test
         {
         }
 
-        static void MockTokenGenerator(ContainerBuilder builder)
+        static void MockTokenGenerator(ContainerBuilder builder, MockHttpServer mockHttpServer)
         {
             var mockdef = new Mock<ITokenGenerator>();
             mockdef.Setup(m => m.GenerateToken()).Returns(() => SessionToken);

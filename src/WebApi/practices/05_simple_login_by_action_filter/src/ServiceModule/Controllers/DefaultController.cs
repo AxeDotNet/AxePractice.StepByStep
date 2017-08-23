@@ -14,7 +14,7 @@ namespace ServiceModule.Controllers
         {
             var response = Request.CreateResponse(HttpStatusCode.OK);
             response.Content = new StringContent(
-                "<h1>This is our awesome API about page</h1>",
+                $"<h1>This is our awesome API about page for {Request.GetUserSession().UserFullname}</h1>",
                 Encoding.UTF8,
                 "text/html");
             return response;

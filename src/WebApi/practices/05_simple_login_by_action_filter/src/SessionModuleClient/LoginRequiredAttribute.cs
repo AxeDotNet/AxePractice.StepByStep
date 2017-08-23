@@ -22,14 +22,41 @@ namespace SessionModuleClient
             CancellationToken cancellationToken)
         {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
-            const string sessionToken = "X-Session-Token";
+            
             HttpRequestMessage request = context.Request;
-            Collection<CookieHeaderValue> cookieHeaderValues =
-                request.Headers.GetCookies(sessionToken);
-            CookieState sessionCookie = cookieHeaderValues
-                .Where(chv => chv.Expires == null || chv.Expires > DateTimeOffset.Now)
-                .SelectMany(chv => chv.Cookies)
-                .FirstOrDefault(c => c.Name == sessionToken);
+            string token = GetSessionToken(request);
+
+            UserSessionDto session = await GetSession(
+                context,
+                cancellationToken,
+                token);
+            request.SetUserSession(session);
+        }
+
+        static async Task<UserSessionDto> GetSession(
+            HttpActionContext context,
+            CancellationToken cancellationToken,
+            string token)
+        {
+            IDependencyScope scope = context.Request.GetDependencyScope();
+            var client = (HttpClient) scope.GetService(typeof(HttpClient));
+            Uri requestUri = context.Request.RequestUri;
+            HttpResponseMessage response = await client.GetAsync(
+                $"{requestUri.Scheme}://{requestUri.UserInfo}{requestUri.Authority}/session/{token}");
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpResponseException(HttpStatusCode.Forbidden);
+            }
+
+            var session = await response.Content.ReadAsAsync<UserSessionDto>(
+                context.ControllerContext.Configuration.Formatters,
+                cancellationToken);
+            return session;
+        }
+
+        static string GetSessionToken(HttpRequestMessage request)
+        {
+            CookieState sessionCookie = GetSessionCookie(request);
             if (sessionCookie == null)
             {
                 throw new HttpResponseException(HttpStatusCode.Forbidden);
@@ -39,16 +66,19 @@ namespace SessionModuleClient
             {
                 throw new HttpResponseException(HttpStatusCode.Forbidden);
             }
+            return token;
+        }
 
-            IDependencyScope scope = request.GetDependencyScope();
-            var client = (HttpClient)scope.GetService(typeof(HttpClient));
-            Uri requestUri = request.RequestUri;
-            HttpResponseMessage response = await client.GetAsync(
-                $"{requestUri.Scheme}://{requestUri.UserInfo}{requestUri.Authority}/session/{token}");
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new HttpResponseException(HttpStatusCode.Forbidden);
-            }
+        static CookieState GetSessionCookie(HttpRequestMessage request)
+        {
+            const string sessionTokenKey = "X-Session-Token";
+            Collection<CookieHeaderValue> cookieHeaderValues =
+                request.Headers.GetCookies(sessionTokenKey);
+            CookieState sessionCookie = cookieHeaderValues
+                .Where(chv => chv.Expires == null || chv.Expires > DateTimeOffset.Now)
+                .SelectMany(chv => chv.Cookies)
+                .FirstOrDefault(c => c.Name == sessionTokenKey);
+            return sessionCookie;
         }
     }
 }
