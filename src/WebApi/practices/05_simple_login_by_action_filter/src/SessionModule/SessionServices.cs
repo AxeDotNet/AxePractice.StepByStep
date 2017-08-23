@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using SessionModule.DomainModels;
 
@@ -25,15 +26,18 @@ namespace SessionModule
 
         public string Create(Credential credential)
         {
-            if (!users.ContainsKey(credential)) { return null; }
-            string username = users[credential];
-            string sessionToken = tokenGenerator.GenerateToken();
-            if (!sessions.TryAdd(sessionToken, new UserSession(username)))
-            {
-                return null;
-            }
+            #region Please implement the method
 
-            return sessionToken;
+            // This class will try validating the credential. If it is valid, it
+            // should store the user session using a token, then you should be able to
+            // find the user session via the token.
+            //
+            // The generated token will also be used as the returned value. Please note
+            // that if the credential does not exist, it should return null.
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public UserSession Get(string token)

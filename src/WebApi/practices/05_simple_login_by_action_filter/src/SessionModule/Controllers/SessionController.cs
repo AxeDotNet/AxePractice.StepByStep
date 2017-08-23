@@ -49,11 +49,17 @@ namespace SessionModule.Controllers
 
             HttpResponseMessage response = Request.CreateResponse(
                 HttpStatusCode.Created, new {Token = token});
-            response.Headers.Location = new Uri(Url.Link("get session", new {token}), UriKind.RelativeOrAbsolute);
-            response.Headers.AddCookies(new []
-            {
-                new CookieHeaderValue(SessionCookieKey, token) 
-            });
+
+            #region Please add necessary information on response headers
+
+            // A created result should contains the resource URI. Since the user
+            // has logged into the system, it should contains the correct cookie
+            // setter.
+
+            throw new NotImplementedException();
+
+            #endregion
+
             return response;
         }
 
@@ -63,14 +69,12 @@ namespace SessionModule.Controllers
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
             if (sessionServices.Delete(token))
             {
-                response.Headers.AddCookies(
-                    new[]
-                    {
-                        new CookieHeaderValue(SessionCookieKey, "")
-                        {
-                            Expires = new DateTimeOffset(1990, 1, 1, 0, 0, 0, TimeSpan.Zero)
-                        }
-                    });
+                #region Please implement the method removing the cookie
+
+                // Please clear the session cookie from the browser.
+                throw new NotImplementedException();
+
+                #endregion
             }
 
             return response;
