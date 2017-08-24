@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Login Page</title>
+    <link rel="stylesheet" href="content/app.css" />
+</head>
+<body>
+<section id="login_page">
+    <div class="section_wrapper">
+        <h1>Login to System</h1>
+        <form>
+            <label for="username">Username</label>
+            <input id="username" name="username" placeholder="Username" type="text" />
+            <label for="password">Password</label>
+            <input id="password" name="password" placeholder="Password" type="password" />
+        </form>
+        <div class="highlight"></div>
+        <input class="btn" value="Sign In" type="button" onclick="login()"/>
+    </div>
+</section>
+<script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script>
+    function login() {
+        const username = $("#username").val();
+        const password = $("#password").val();
+        if (!username || !password) {
+            setErrorMessage("The username and password fields are mandatory.");
+            return;
+        }
+        $.post("/session", { username: username, password: password })
+            .done(() => window.location.href = "/")
+            .fail(() => setErrorMessage("Invalid username or password"));
+    }
+
+    function setErrorMessage(text) {
+        $(".highlight").text(text);
+    }
+</script>
+</body>
+</html>

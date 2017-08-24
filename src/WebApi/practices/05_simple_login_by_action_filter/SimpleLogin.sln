@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceProvider", "src\ServiceProvider\ServiceProvider.csproj", "{707DB8E3-2679-4BFA-A536-AE2A598F8461}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bootstrapper.WebApi", "src\Bootstrapper.WebApi\Bootstrapper.WebApi.csproj", "{FE6204B0-1017-4C45-A823-08B4C31267A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SessionModule", "src\SessionModule\SessionModule.csproj", "{AEEACE1E-4A47-449A-98BF-DF608652DAC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleLogin.Test", "test\SimpleLogin.Test\SimpleLogin.Test.csproj", "{50BBCE50-CF7D-4141-BB22-DC2B18D9CFE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceModule", "src\ServiceModule\ServiceModule.csproj", "{AD114F03-D2F7-4355-A1E6-96D93DB5814C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SessionModuleClient", "src\SessionModuleClient\SessionModuleClient.csproj", "{3572F4B2-6350-462B-90F1-96C5181D2780}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{707DB8E3-2679-4BFA-A536-AE2A598F8461}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{707DB8E3-2679-4BFA-A536-AE2A598F8461}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{707DB8E3-2679-4BFA-A536-AE2A598F8461}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{707DB8E3-2679-4BFA-A536-AE2A598F8461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE6204B0-1017-4C45-A823-08B4C31267A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE6204B0-1017-4C45-A823-08B4C31267A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE6204B0-1017-4C45-A823-08B4C31267A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE6204B0-1017-4C45-A823-08B4C31267A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEEACE1E-4A47-449A-98BF-DF608652DAC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEEACE1E-4A47-449A-98BF-DF608652DAC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEEACE1E-4A47-449A-98BF-DF608652DAC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEEACE1E-4A47-449A-98BF-DF608652DAC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50BBCE50-CF7D-4141-BB22-DC2B18D9CFE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50BBCE50-CF7D-4141-BB22-DC2B18D9CFE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50BBCE50-CF7D-4141-BB22-DC2B18D9CFE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50BBCE50-CF7D-4141-BB22-DC2B18D9CFE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD114F03-D2F7-4355-A1E6-96D93DB5814C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD114F03-D2F7-4355-A1E6-96D93DB5814C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD114F03-D2F7-4355-A1E6-96D93DB5814C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD114F03-D2F7-4355-A1E6-96D93DB5814C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3572F4B2-6350-462B-90F1-96C5181D2780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3572F4B2-6350-462B-90F1-96C5181D2780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3572F4B2-6350-462B-90F1-96C5181D2780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3572F4B2-6350-462B-90F1-96C5181D2780}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {189D3991-4AA9-4182-8A30-B91DCC9686CC}
+	EndGlobalSection
+EndGlobal
