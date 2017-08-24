@@ -32,7 +32,7 @@ namespace HandleResponsePractice
         {
             HttpResponseMessage response = await ClientHelper.Client.GetAsync(
                 "user/1/resource/nocontent");
-            
+
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Empty(await response.Content.ReadAsByteArrayAsync());
         }
@@ -63,7 +63,7 @@ namespace HandleResponsePractice
 
             Assert.Equal("ResourceWithoutLinks", dto.Type);
         }
-        
+
         [Fact]
         public async Task should_default_to_non_restricted_if_not_specified()
         {

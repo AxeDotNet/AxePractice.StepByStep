@@ -1,7 +1,13 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Http;
 using System.Web.Http.Filters;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SampleWebApi.Services;
 
 namespace SampleWebApi
 {
@@ -35,7 +41,10 @@ namespace SampleWebApi
          */
         public RestrictedUacAttribute(string userIdArgumentName)
         {
-            throw new NotImplementedException();
+            if (userIdArgumentName == null)
+                throw new ArgumentNullException(nameof(userIdArgumentName));
+
+            this.userIdArgumentName = userIdArgumentName;
         }
 
         /*
@@ -49,7 +58,48 @@ namespace SampleWebApi
             HttpActionExecutedContext context,
             CancellationToken token)
         {
-            throw new NotImplementedException();
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            var response = context.Response;
+            if (!IsSuccessResponse(context) || response.Content == null)
+            {
+                return;
+            }
+
+            object userId;
+            var arguments = context.ActionContext?.ActionArguments?? throw new HttpResponseException(HttpStatusCode.BadRequest);
+            if (!arguments.TryGetValue(userIdArgumentName, out userId))
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+
+            var scope = context.Request?.GetDependencyScope();
+            if (scope == null) throw new HttpResponseException(HttpStatusCode.InternalServerError);
+            var service = (RestrictedUacContractService)scope.GetService(typeof(RestrictedUacContractService));
+            if (service == null) throw new HttpResponseException(HttpStatusCode.InternalServerError);
+
+            var content = await response.Content.ReadAsStringAsync();
+            var contentObj = JsonConvert.DeserializeObject<object>(content) as JObject;
+
+            if (contentObj == null) throw new HttpResponseException(HttpStatusCode.InternalServerError);
+            var hasRemoved = service.RemoveRestrictedInfo((long) userId, contentObj);
+            if (!hasRemoved)
+            {
+                return;
+            }
+
+            response.Content = new ObjectContent<JObject>(contentObj, context.ActionContext.ControllerContext.Configuration.Formatters.JsonFormatter);
+        }
+
+        bool IsSuccessResponse(HttpActionExecutedContext context)
+        {
+            if (context.Exception == null) return true;
+            if (context.Response == null) return true;
+
+            return context.Response.IsSuccessStatusCode;
         }
 
         #endregion

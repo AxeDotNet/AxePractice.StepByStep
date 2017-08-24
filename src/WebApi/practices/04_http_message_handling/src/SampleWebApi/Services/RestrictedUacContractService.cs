@@ -16,23 +16,26 @@ namespace SampleWebApi.Services
 
         public bool RemoveRestrictedInfo(long userId, JObject restrictedResource)
         {
-            if (roleRepository.Get(userId) == Role.Admin) { return false; }
+            if (roleRepository.Get(userId) == Role.Admin) return false;
 
-            var linksArray = restrictedResource["links"] as JArray;
-            if (linksArray == null) { return false; }
-            JToken[] restrictedLinks = linksArray.Where(
-                item =>
-                {
-                    var linkItemObj = item as JObject;
-                    var restrictedProp = linkItemObj?["restricted"];
-                    if (restrictedProp?.Type != JTokenType.Boolean) { return false; }
-                    return restrictedProp.Value<bool>();
-                }).ToArray();
-            if (restrictedLinks.Length == 0) { return false; }
-            foreach (JToken restrictedLink in restrictedLinks)
+            var links = restrictedResource["links"] as JArray;
+            if (links == null) return false;
+
+            var resitrictedLinks = links.Where(link =>
             {
-                linksArray.Remove(restrictedLink);
+                var linkObj = link as JObject;
+                var isRestricted = linkObj?["restricted"];
+                return isRestricted?.Type == JTokenType.Boolean &&
+                    isRestricted.Value<bool>();
+            }).ToList();
+
+            if (resitrictedLinks.Count == 0) return false;
+
+            foreach (var resitrictedLink in resitrictedLinks)
+            {
+                links.Remove(resitrictedLink);
             }
+
             return true;
         }
     }
