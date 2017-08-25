@@ -21,23 +21,43 @@ namespace SessionModuleClient
             HttpAuthenticationContext context,
             CancellationToken cancellationToken)
         {
-            if (context == null) { return; }
+            if (context == null){ return; }
             HttpRequestMessage request = context.Request;
             string token = GetSessionToken(request);
-            if (token == null) { return; }
+            if (token == null)
+            {
+                SetAnonymousPrincipal(context);
+                return;
+            }
 
             UserSessionDto session = await GetSession(
                 context,
                 cancellationToken,
                 token);
-            if (session == null) { return; }
+            if (session == null)
+            {
+                SetAnonymousPrincipal(context);
+                return;
+            }
+
+            SetAuthenticatedPrincipal(context, token, session);
+        }
+
+        static void SetAnonymousPrincipal(HttpAuthenticationContext context)
+        {
+            context.Principal = new ClaimsPrincipal();
+        }
+
+        static void SetAuthenticatedPrincipal(HttpAuthenticationContext context, string token, UserSessionDto session)
+        {
             context.Principal = new ClaimsPrincipal(
                 new ClaimsIdentity(
-                    new []
+                    new[]
                     {
                         new Claim("token", token),
-                        new Claim("userFullName", session.UserFullname), 
-                    }, "custom_authentication"));
+                        new Claim("userFullName", session.UserFullname),
+                    },
+                    "custom_authentication"));
         }
 
         public Task ChallengeAsync(
