@@ -1,0 +1,8 @@
+﻿html { font-family: "Helvetica Neue",Arial,sans-serif; font-size: 16px; }
+
+#login_page .section_wrapper { margin: 0 auto; max-width: 540px; padding: 0 1em; }
+#login_page h1 { font-size: 1.7em; line-height: 1.2em; margin-top: 1.6em; }
+#login_page form label { display: block; font-weight: lighter; font-size: 1em; color: #4d4d4d; margin: 0 0 0.2em; }
+#login_page form input { display: block; font-size: 1.2em; background: #edeff0; border-radius: 4px; border: 1px solid #cdd2d4; padding: 0.5em; margin: 0 0 1em;  width: 70% }
+#login_page .btn { font-size: 1em; background: linear-gradient(to bottom, #61bd4f 0, #5aac44 100%); box-shadow: 0 2px 0 #3f6f21; color: #fff; border-radius: 0.3em; border: 0; padding: 0.6em 1.3em; }
+#login_page .highlight { font-size: 1em; color: red; margin: 0 0 1em; }
