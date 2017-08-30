@@ -16,8 +16,9 @@ namespace Bootstrapper.WebApi
 
         protected Bootstrapper(HttpConfiguration configuration)
         {
-            this.configuration = configuration ?? 
+            if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
+            this.configuration = configuration;
         }
 
         public void Initialize()

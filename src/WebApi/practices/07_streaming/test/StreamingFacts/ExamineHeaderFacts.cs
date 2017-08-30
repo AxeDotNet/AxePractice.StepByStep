@@ -11,7 +11,7 @@ namespace StreamingFacts
         {
             BaseAddress = new Uri("http://localhost:49724")
         };
-    } 
+    }
 
     public class ExamineHeaderFacts
     {
@@ -26,11 +26,14 @@ namespace StreamingFacts
 
             /*
              * You should send a GET request to "stream/slow" and try getting the
-             * content filename from the response in 5 secs. 
-             * 
+             * content filename from the response in 5 secs.
+             *
              * NOTE: you may have to start the WebApp application on port 49724
              * before executing the unit test.
              */
+
+            var response = await Client.GetAsync("stream/slow", HttpCompletionOption.ResponseHeadersRead);
+            filename = response.Content.Headers.ContentDisposition.FileName;
 
             #endregion
 
