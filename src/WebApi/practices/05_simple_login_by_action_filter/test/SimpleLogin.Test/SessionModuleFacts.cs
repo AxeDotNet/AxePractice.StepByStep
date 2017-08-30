@@ -45,10 +45,10 @@ namespace SimpleLogin.Test
 
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
             Assert.Equal(
-                $"{BaseAddress}/session/{SessionToken}", 
+                $"{BaseAddress}/session/{SessionToken}",
                 response.Headers.Location.AbsoluteUri);
             Assert.Equal(
-                $"X-Session-Token={SessionToken}", 
+                $"X-Session-Token={SessionToken}",
                 response.Headers.GetValues("Set-Cookie").Single());
         }
 
@@ -72,7 +72,7 @@ namespace SimpleLogin.Test
             Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
             string stringContent = await getResponse.Content.ReadAsStringAsync();
             var session = JsonConvert.DeserializeAnonymousType(
-                stringContent, 
+                stringContent,
                 new {userFullName = default(string)});
 
             Assert.Equal("Kayla Logan", session.userFullName);

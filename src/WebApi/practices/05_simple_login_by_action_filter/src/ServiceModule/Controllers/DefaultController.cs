@@ -17,7 +17,8 @@ namespace ServiceModule.Controllers
             #region Please implement the following code
 
             // This method will create response based on current logged in user.
-            throw new NotImplementedException();
+
+
 
             #endregion
 
