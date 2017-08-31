@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -69,13 +70,11 @@ namespace StreamingFacts
 
         static HttpRequestMessage CreateRequest(StreamContent streamContent)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "stream")
-            {
-                Content = streamContent
-            };
+            #region Please implement the method to create streaming request
 
-            request.Headers.TransferEncodingChunked = true;
-            return request;
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         static StreamContent CreateStreamContent(
@@ -83,15 +82,11 @@ namespace StreamingFacts
             string contentType,
             string fileName)
         {
-            var streamContent = new StreamContent(countedStream, 1024);
-            streamContent.Headers.ContentType =
-                new MediaTypeHeaderValue(contentType);
-            streamContent.Headers.ContentDisposition =
-                new ContentDispositionHeaderValue("attachment")
-                {
-                    FileName = fileName
-                };
-            return streamContent;
+            #region Please implement the method to create the stream content
+
+            throw new NotImplementedException();
+
+            #endregion
         }
     }
 }
