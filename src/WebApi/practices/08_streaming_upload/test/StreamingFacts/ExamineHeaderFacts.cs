@@ -72,6 +72,12 @@ namespace StreamingFacts
         {
             #region Please implement the method to create streaming request
 
+            /*
+             * When we sends a stream that is not seekable. We should config the request
+             * to ensure it is sent via chunked transfer (or the HttpClient will buffer
+             * the whole stream into memory)
+             */
+
             throw new NotImplementedException();
 
             #endregion
@@ -83,6 +89,11 @@ namespace StreamingFacts
             string fileName)
         {
             #region Please implement the method to create the stream content
+
+            /*
+             * You should create a streaming content and set the content type as well as
+             * fileName in the correspond content releated headers.
+             */
 
             throw new NotImplementedException();
 
