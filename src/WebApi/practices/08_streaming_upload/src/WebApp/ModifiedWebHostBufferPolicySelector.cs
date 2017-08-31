@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Web;
 using System.Web.Http.WebHost;
 
 namespace WebApp
@@ -8,17 +7,11 @@ namespace WebApp
     {
         public override bool UseBufferedInputStream(object hostContext)
         {
-            if (hostContext == null)
-                throw new ArgumentNullException(nameof(hostContext));
-            var context = hostContext as HttpContextBase;
-            HttpRequestBase request = context?.Request;
-            if (request?.ContentType == null)
-            {
-                return true;
-            }
+            #region Please implement the method to return the correct buffer type
 
-            return !string.IsNullOrEmpty(request.ContentType) 
-                && !request.ContentType.Equals("application/octet-stream");
+            throw new NotImplementedException();
+
+            #endregion
         }
     }
 }
