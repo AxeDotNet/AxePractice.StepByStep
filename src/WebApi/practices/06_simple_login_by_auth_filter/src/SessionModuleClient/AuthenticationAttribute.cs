@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Http;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Filters;
@@ -21,19 +23,48 @@ namespace SessionModuleClient
              * We need to create IPrincipal from the authentication token. If
              * we can retrive user session, then the structure of the IPrincipal
              * should be in the following form:
-             * 
+             *
              * ClaimsPrincipal
              *   |- ClaimsIdentity (Primary)
              *        |- Claim: { key: "token", value: "$token value$" }
              *        |- Claim: { key: "userFullName", value: "$user full name$" }
-             * 
+             *
              * If user session cannot be retrived, then the context principal
              * should be an empty ClaimsPrincipal (unauthenticated).
              */
 
-            throw new NotImplementedException();
+            if (context == null) { return; }
+
+            var sessionToken = GetSessionToken(context.Request);
+            var session = await GetSessionAsync(context, cancellationToken, sessionToken);
+            if (session == null)
+            {
+                context.Principal = new ClaimsPrincipal();
+                return;
+            }
+
+            SetAuthenticatedPrincipal(context, sessionToken, session);
 
             #endregion
+        }
+
+        void SetAuthenticatedPrincipal(HttpAuthenticationContext context, string token, UserSessionDto session)
+        {
+            context.Principal = new ClaimsPrincipal(new ClaimsIdentity(new []
+            {
+                new Claim("token", token),
+                new Claim("userFullName", session.UserFullname)
+            }, "custom_authentication_type"));
+        }
+
+        private async UserSessionDto GetSessionAsync(HttpAuthenticationContext context, CancellationToken cancellationToken, string sessionToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        string GetSessionToken(HttpRequestMessage contextRequest)
+        {
+            throw new NotImplementedException();
         }
 
         public Task ChallengeAsync(
@@ -50,7 +81,11 @@ namespace SessionModuleClient
              * response.
              */
 
-            throw new NotImplementedException();
+            if (RedirectToLoginOnChallenge)
+            {
+                context.Result = new RedirectToLoginPageIfUnauthorizedResult(context.Request, context.Result);
+            }
+            return Task.CompletedTask;
 
             #endregion
         }
