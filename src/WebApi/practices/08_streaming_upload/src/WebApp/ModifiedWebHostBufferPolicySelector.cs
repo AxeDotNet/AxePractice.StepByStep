@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Web.Http.WebHost;
 
 namespace WebApp
@@ -21,7 +22,12 @@ namespace WebApp
              * the content is something that we do not know (octet-stream).
              */
 
-            throw new NotImplementedException();
+            if (hostContext == null) throw new ArgumentNullException(nameof(hostContext));
+            var context = hostContext as HttpContextBase;
+            var contentType = context?.Request?.ContentType;
+
+            return !string.IsNullOrEmpty(contentType) &&
+                   !contentType.Equals("application/octet-stream");
 
             #endregion
         }

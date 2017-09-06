@@ -77,8 +77,13 @@ namespace StreamingFacts
              * to ensure it is sent via chunked transfer (or the HttpClient will buffer
              * the whole stream into memory)
              */
+            var request = new HttpRequestMessage(HttpMethod.Post, "stream")
+            {
+                Content = streamContent
+            };
+            request.Headers.TransferEncodingChunked = true;
 
-            throw new NotImplementedException();
+            return request;
 
             #endregion
         }
@@ -95,7 +100,14 @@ namespace StreamingFacts
              * fileName in the correspond content releated headers.
              */
 
-            throw new NotImplementedException();
+            var content = new StreamContent(countedStream);
+            content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+            content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = fileName
+            };
+
+            return content;
 
             #endregion
         }
