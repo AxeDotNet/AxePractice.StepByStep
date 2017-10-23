@@ -52,14 +52,14 @@ namespace Orm.Practice
         [Theory]
         [InlineData(typeof(AddressRepositoryLinqImpl))]
         [InlineData(typeof(AddressRepositoryQueryOverImpl))]
-        public void should_get_person_address_model_by_ids_order_by_postal(Type repositoryType)
+        public void should_get_person_address_model_by_ids_order_by_id(Type repositoryType)
         {
             IAddressRepository addressRepository = CreateRepository(repositoryType, Session);
-            IList<Address> addresses = addressRepository.Get(new[] {22, 23, 24});
+            IList<Address> addresses = addressRepository.Get(new[] {23, 22, 24});
 
             Assert.Equal(
                 addresses.Select(a => a.Id),
-                new [] {24, 22, 23});
+                new [] {22, 23, 24});
         }
 
         [Theory]

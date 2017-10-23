@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using NHibernate;
-using NHibernate.Linq;
 
 namespace Orm.Practice
 {
@@ -18,7 +17,7 @@ namespace Orm.Practice
         {
             #region Please implement the method
 
-            return Session.Query<Address>().SingleOrDefault(item => item.Id == id);
+            throw new NotImplementedException();
 
             #endregion
         }
@@ -27,10 +26,7 @@ namespace Orm.Practice
         {
             #region Please implement the method
 
-            return Session.Query<Address>()
-                .Where(a => ids.Contains(a.Id))
-                .OrderBy(a => a.PostalCode)
-                .ToArray();
+            throw new NotImplementedException();
 
             #endregion
         }
@@ -39,48 +35,46 @@ namespace Orm.Practice
         {
             #region Please implement the method
 
-            return Session.Query<Address>()
-                .Where(a => a.City == city)
-                .OrderBy(a => a.Id)
-                .ToArray();
+            throw new NotImplementedException();
 
             #endregion
         }
 
         public Task<IList<Address>> GetByCityAsync(string city)
         {
-            return GetByCityAsync(city, CancellationToken.None);
+            #region Please implement the method
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public async Task<IList<Address>> GetByCityAsync(
             string city, CancellationToken cancellationToken)
         {
-            return await Session.Query<Address>()
-                .Where(a => a.City == city)
-                .OrderBy(a => a.Id)
-                .ToListAsync(cancellationToken);
+            #region Please implement the method
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public IList<KeyValuePair<int, string>> GetOnlyTheIdAndTheAddressLineByCity(string city)
         {
             #region Please implement the method
 
-            return Session.Query<Address>()
-                .Where(a => a.City == city)
-                .OrderBy(a => a.Id)
-                .Select(a => new KeyValuePair<int, string>(a.Id, a.AddressLine1))
-                .ToArray();
+            throw new NotImplementedException();
 
             #endregion
         }
 
         public IList<string> GetPostalCodesByCity(string city)
         {
-            return Session.Query<Address>()
-                .Where(a => a.City == city)
-                .Select(a => a.PostalCode)
-                .Distinct()
-                .ToList();
+            #region Please implement the method
+
+            throw new NotImplementedException();
+
+            #endregion
         }
     }
 }

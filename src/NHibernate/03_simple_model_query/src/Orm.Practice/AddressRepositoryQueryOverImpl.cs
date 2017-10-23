@@ -1,9 +1,8 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NHibernate;
-using NHibernate.Criterion;
 
 namespace Orm.Practice
 {
@@ -15,58 +14,65 @@ namespace Orm.Practice
 
         public Address Get(int id)
         {
-            return Session.QueryOver<Address>()
-                .Where(item => item.Id == id)
-                .SingleOrDefault();
+            #region Please implement the method
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public IList<Address> Get(IEnumerable<int> ids)
         {
-            return Session.QueryOver<Address>()
-                .WhereRestrictionOn(a => a.Id)
-                .IsIn(ids.ToArray())
-                .OrderBy(a => a.PostalCode).Asc
-                .List();
+            #region Please implement the method
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public IList<Address> GetByCity(string city)
         {
-            return Session.QueryOver<Address>()
-                .Where(item => item.City == city)
-                .OrderBy(item => item.Id).Asc
-                .List();
+            #region Please implement the method
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public Task<IList<Address>> GetByCityAsync(string city)
         {
-            return GetByCityAsync(city, CancellationToken.None);
+            #region Please implement the method
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public Task<IList<Address>> GetByCityAsync(string city, CancellationToken cancellationToken)
         {
-            return Session.QueryOver<Address>()
-                .Where(item => item.City == city)
-                .OrderBy(item => item.Id).Asc
-                .ListAsync(cancellationToken);
+            #region Please implement the method
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public IList<KeyValuePair<int, string>> GetOnlyTheIdAndTheAddressLineByCity(string city)
         {
-            return Session.QueryOver<Address>()
-                .Where(item => item.City == city)
-                .OrderBy(item => item.Id).Asc
-                .SelectList(l => l.Select(a => a.Id).Select(a => a.AddressLine1))
-                .List<object[]>()
-                .Select(props => new KeyValuePair<int, string>((int) props[0], (string) props[1]))
-                .ToList();
+            #region Please implement the method
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         public IList<string> GetPostalCodesByCity(string city)
         {
-            return Session.QueryOver<Address>()
-                .Where(item => item.City == city)
-                .Select(Projections.Distinct(Projections.Property<Address>(item => item.PostalCode)))
-                .List<string>();
+            #region Please implement the method
+
+            throw new NotImplementedException();
+
+            #endregion
         }
     }
 }
