@@ -70,13 +70,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InsertAndDeleteFacts.cs" />
-    <Compile Include="ManyToOneFacts.cs" />
     <Compile Include="OrmFactBase.cs" />
-    <Compile Include="SalesPerson.cs" />
-    <Compile Include="SalesTerritory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RepositoryBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
