@@ -13,16 +13,18 @@ namespace Orm.Practice
         readonly ISessionFactory sessionFactory;
         public ITestOutputHelper Output { get; }
         public ISession Session { get; }
+        public IStatelessSession StatelessSession { get; }
         readonly StringWriter outputCache = new StringWriter();
 
         protected string ConnectionString { get; }
-            = "Data Source=(local);Initial Catalog=AdventureWorks2014;Integrated Security=True;";
+            = "Data Source=(local);Initial Catalog=AwesomeDb;Integrated Security=True;";
 
         protected OrmFactBase(ITestOutputHelper output)
         {
             Output = output;
             sessionFactory = CreateSessionFactory(ConnectionString);
             Session = sessionFactory.OpenSession();
+            StatelessSession = sessionFactory.OpenStatelessSession();
         }
 
         ISessionFactory CreateSessionFactory(string connectionString)
