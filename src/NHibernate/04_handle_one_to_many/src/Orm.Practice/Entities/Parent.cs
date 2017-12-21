@@ -16,10 +16,11 @@ namespace Orm.Practice.Entities
     {
         public ParentMap()
         {
-            Id(m => m.ParentId).GeneratedBy.GuidNative();
-            Map(m => m.Name);
-            Map(m => m.IsForQuery);
-            HasMany(m => m.Children).KeyColumn("[ParentID]").Inverse().Cascade.AllDeleteOrphan();
+            #region Please modify the code to pass the test
+
+            throw new NotImplementedException();
+
+            #endregion
         }
     }
 }

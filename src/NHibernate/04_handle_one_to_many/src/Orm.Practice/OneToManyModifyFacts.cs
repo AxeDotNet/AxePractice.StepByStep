@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NHibernate;
 using NHibernate.Linq;
@@ -37,6 +38,7 @@ namespace Orm.Practice
         {
             var parent = new Parent
             {
+                ParentId = Guid.NewGuid(),
                 IsForQuery = false,
                 Name = "nq-parent-1"
             };
@@ -48,15 +50,13 @@ namespace Orm.Practice
             Parent insertedParent = Session.Query<Parent>()
                 .Single(p => p.Name == "nq-parent-1");
 
-            var child = new Child
-            {
-                IsForQuery = false,
-                Name = "nq-child-1-parent-1",
-                Parent = insertedParent
-            };
+            #region Please modify the code to save a new child to an existing parent
 
-            Session.Save(child);
-            Session.Flush();
+            throw new NotImplementedException();
+
+            #endregion
+
+            Session.Clear();
 
             Parent updatedParent = Session.Query<Parent>()
                 .Fetch(p => p.Children)
@@ -81,34 +81,27 @@ namespace Orm.Practice
         
         void DeleteParentAndChild(string parentName)
         {
-            Parent[] parents = Session.Query<Parent>()
-                .Where(p => p.Name == parentName)
-                .ToArray();
+            #region Please implement this method
 
-            foreach (Parent parent in parents)
-            {
-                Session.Delete(parent);
-            }
-            
-            Session.Flush();
+            // This method will delete parent with the spcified name. And children
+            // associated with this parent will also be deleted.
+
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         void SaveParentAndChildren(string parentName, string[] childrenNames)
         {
-            var parent = new Parent
-            {
-                IsForQuery = false,
-                Name = parentName,
-                Children = new List<Child>()
-            };
+            #region Please implement this method
 
-            Child[] children = childrenNames
-                .Select(c => new Child {IsForQuery = false, Name = c, Parent = parent})
-                .ToArray();
-            parent.Children = children;
+            // This method should create a parent with `parentName`. And children
+            // with `childrenNames` should also be created and associated with
+            // parent.
 
-            Session.Save(parent);
-            Session.Flush();
+            throw new NotImplementedException();
+
+            #endregion
         }
 
         void ExecuteNonQuery(string sql)

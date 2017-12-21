@@ -8,17 +8,23 @@ namespace Orm.Practice.Entities
         public virtual Guid ChildId { get; set; }
         public virtual string Name { get; set; }
         public virtual bool IsForQuery { get; set; }
-        public virtual Parent Parent { get; set; }
+
+        #region You can add some code here if you want
+
+        // It is totally okay if you do not want to do anything here.
+
+        #endregion
     }
 
     public class ChildMap : ClassMap<Child>
     {
         public ChildMap()
         {
-            Id(m => m.ChildId).GeneratedBy.GuidNative();
-            Map(m => m.Name);
-            Map(m => m.IsForQuery);
-            References(m => m.Parent).Column("ParentID");
+            #region Please modify the code to pass the test
+
+            throw new NotImplementedException();
+
+            #endregion
         }
     }
 }
